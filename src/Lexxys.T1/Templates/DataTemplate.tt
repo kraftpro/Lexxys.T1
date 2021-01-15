@@ -1,0 +1,989 @@
+﻿<#@template language="C#" #>
+<#@import namespace="System.Data" #>
+<#@import namespace="System.Linq" #>
+<#@import namespace="System.Text" #>
+<#@import namespace="System.Collections.Generic" #>
+<#@import namespace="Lexxys" #>
+/*
+	Server: <#=Lexxys.Config.GetValue<Lexxys.ConnectionStringInfo>("database.connection").Server#>
+	Version <#=System.Reflection.Assembly.GetEntryAssembly().GetName().Version#> at <#=DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")#>
+*/
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using Lexxys;
+<#
+if (Project == null)
+	throw new ArgumentNullException(nameof(Project));
+
+var dc = Project.Expression.DataContext;
+
+foreach (var u in Project.Using)
+{
+	var v = u.TrimToNull();
+	if (v == null)
+		continue;
+	if (!v.EndsWith(";"))
+		v += ";";
+#>
+using <#=v#>
+<#
+}
+#>
+
+namespace <#=Project.Namespace ?? "Entities"#>.Data
+{
+<#
+	foreach (TableInfo table in Tables.Values)
+	{
+		var cls = table.Class;
+		string className = table.PublicName;
+		string recordName = className + "Record";
+		ColumnInfo keyColumn = table.KeyFields.Count == 1 ? table.KeyFields[0]: ColumnInfo.DefaultIdKey;
+		TableInfo view = table.View;
+#>
+
+	[Serializable]
+	partial class <#=recordName#>: IDump<#=Project.Implements == null ? "": ", " + Project.Implements#>
+	{
+		#region Fields
+<#
+		foreach (var field in view.Fields.Union(cls.ExtraFields))
+		{
+			string comment = null;
+			if (field.Bind != field.FieldName)
+				comment = "\t// " + field.Bind;
+			if (field.Reference != null)
+				comment = (comment ?? "\t//") + " -> " + field.Reference;
+#>
+		public <#=field.CsFieldType#> <#=field.FieldName#> { get; set; }<#=comment ?? ""#>
+<#
+		}
+#>
+
+		private <#=recordName#> _originalCopy;
+		private static readonly <#=recordName#> _emptyRecord = new <#=recordName#>();
+		#endregion
+
+		public <#=recordName#>()
+		{
+<#
+		List<(ColumnInfo Field, string Expression)> initializators = table.Fields.Where(o => o.InitializationExpression != null).Select(o => (o, o.InitializationExpression)).ToList();
+		for (int i = 0; i < initializators.Count; ++i)
+		{
+#>			<#=initializators[i].Field.FieldName#> = <#=initializators[i].Expression#>;
+<#		}
+#>		}
+
+		public bool IsRecordNew => _originalCopy == null;
+
+<#
+		List<ColumnInfo> freeFields = table.Fields.Where(o => !o.ControlledByDatasource).ToList();
+		if (freeFields.All(o => o.IsDeterministic))
+		{
+#>
+		public bool IsRecordModified
+		{
+			get
+			{
+				<#=recordName#> copy = _originalCopy ?? _emptyRecord;
+				return
+<#
+			for (int i = 0; i < freeFields.Count; ++i)
+			{
+				var field = freeFields[i];
+#>
+					copy.<#= field.FieldName #> != <#= field.FieldName #><#= i < freeFields.Count - 1 ? " ||": ";" #>
+<#
+			}
+#>
+			}
+		}
+<#
+		}
+		else
+		{
+			List<ColumnInfo> insertingFields = freeFields.Where(o => o.IsDeterministic).ToList();
+			if (insertingFields.Count == 0)
+			{
+				if (freeFields.Count == 0)
+				{
+#>
+		public bool IsRecordModified => _originalCopy == null;
+<#
+				}
+				else
+				{
+#>
+		public bool IsRecordModified => _originalCopy == null || <#=String.Join(" || ", freeFields.Select(o => String.Format("_originalCopy.{0} != {0}", o.FieldName)))#>;
+<#
+				}
+			}
+			else
+			{
+#>
+		public bool IsRecordModified => _originalCopy == null ?
+<#
+				for (int i = 0; i < insertingFields.Count; ++i)
+				{
+					var field = insertingFields[i];
+#>
+			<#=field.FieldName #> != <#=field.InitializationExpression ?? "default"#><#= i < insertingFields.Count - 1 ? " ||": ":" #>
+<#
+				}
+#>
+<#
+				for (int i = 0; i < freeFields.Count; ++i)
+				{
+					var field = freeFields[i];
+#>
+			_originalCopy.<#= field.FieldName #> != <#= field.FieldName #><#= i < freeFields.Count - 1 ? " ||": ";" #>
+<#
+				}
+			}
+		}
+#>
+
+		public bool IsFieldModified(Func<<#=recordName#>, object> accessor)
+		{
+			return !object.Equals(accessor(this), accessor(_originalCopy ?? _emptyRecord));
+		}
+
+		public T GetOriginalValue<T>(Func<<#=recordName#>, T> accessor)
+		{
+			return accessor(_originalCopy ?? _emptyRecord);
+		}
+<#
+		var asncTable = new (bool IsAsync, string AsAsync, string Async, string Await, Func<string, string> Type)[]
+		{
+			(false, "", "", "", o => o),
+			(true, "async ", "Async", "await ", o => o == "void" ? "Task": "Task<" + o + ">")
+		};
+
+		foreach (var method in table.Loads)
+		{
+			var keys = method.Fields;
+			if (keys.Count == 0)
+				continue;
+			var methodName = method.NameByParameters("Load");
+			var queryClause = (cls.Query ?? view.GetSelectClause()) + (method.Joins == null ? "": " " + method.Joins) + method.MakeWhere(true) + method.MakeOrder();
+			if (queryClause.IndexOf("order by", StringComparison.OrdinalIgnoreCase) > 0)
+			{
+				int i = queryClause.IndexOf("select ", StringComparison.OrdinalIgnoreCase);
+				if (i >= 0)
+					queryClause = queryClause.Insert(i + 7, "top 1 ");
+			}
+
+			string[] whereVars = method.MakeNotNulableWhereTable();
+			string chooseExpression = method.GetNotNullableTableIndex();
+			string tableName = "__" + Tool.ToCamelCase(methodName) + "Stmt";
+
+			foreach (var a in asncTable)
+			{
+#>
+
+		public static <#=a.AsAsync#><#=a.Type(recordName)#> <#=methodName#><#=a.Async#>(<#=method.MakeDeclaration()#>)
+		{
+			try
+			{
+				<#=recordName#> record = null;
+				<#=a.Await#><#=dc#>.Map<#=a.Async#>(1, o => (record = new <#=recordName#>()).LoadRecord(o, 0),
+					<#=chooseExpression == null ? Strings.EscapeCsString(queryClause): $"{tableName}[{chooseExpression}]"#>,
+<#
+				for (int i = 0; i < keys.Count; ++i)
+				{
+					var key = keys[i];
+#>					new SqlParameter("@<#=key.GetSqlParameterName()#>", SqlDbType.<#=keys[i].SqlDbType#>) { Value = <#=key.GetLocalName()#><#=key.IsNullable ? " ?? (object)DBNull.Value": ""#> }<#=i == keys.Count - 1 ? ");": ","#>
+<#
+				}
+#>
+				return record;
+			}
+			catch (Exception flaw)
+			{
+				flaw.Add("table", "<#=table.FullName#>")
+<#
+				for (int i = 0; i < keys.Count; ++i)
+				{
+					var key = keys[i];
+#>					.Add("<#=key.GetLocalName()#>", <#=key.GetLocalName()#>)<#=i == keys.Count - 1 ? ";": ""#>
+<#
+				}
+#>
+				throw;
+			}
+		}
+<#
+			}
+			if (whereVars.Length > 0)
+			{
+#>
+		private static readonly string[] <#=tableName#> = new[]
+			{
+<#
+				for (int i = 0; i < whereVars.Length; ++i)
+				{
+#>
+				<#=Strings.EscapeCsString(queryClause + whereVars[i] + method.MakeOrder())#>,
+<#
+				}
+#>
+			};
+<#
+			}
+		}
+
+		foreach (var key in table.Fields.Where(o => o != keyColumn && o.IsUnique))
+		{
+			var name = key.FieldName;
+			var idName = name.Substring(0, 1).ToLowerInvariant() + name.Substring(1);
+			if (name.EndsWith("Id", StringComparison.Ordinal))
+				name = name.Substring(0, name.Length - 2);
+			foreach (var a in asncTable)
+			{
+#>
+
+		public static <#=a.AsAsync#><#=a.Type(recordName)#> LoadBy<#=name#><#=a.Async#>(<#=key.CsType#> <#=idName#>)
+		{
+			try
+			{
+				<#=recordName#> record = null;
+				<#=a.Await#><#=dc#>.Map<#=a.Async#>(1, o => (record = new <#=recordName#>()).LoadRecord(o, 0),
+					"<#=cls.Query ?? view.GetSelectClause()#> where [<#=key.Bind#>]=@<#=name#>",
+					new SqlParameter("@<#=name#>", SqlDbType.<#=key.SqlDbType#>) { Value = <#=idName#> });
+				return record;
+			}
+			catch (Exception flaw)
+			{
+				flaw.Add("table", "<#=table.FullName#>")
+					.Add("<#=name#>", <#=idName#>);
+				throw;
+			}
+		}
+<#
+			}
+		}
+
+
+		if (keyColumn.CsType == "int" && table.KeyFields.Count == 1)
+		{
+			foreach (var a in asncTable)
+			{
+#>
+
+		public static <#=a.AsAsync#><#=a.Type($"List<{recordName}>")#> Collect<#=a.Async#>(IEnumerable<int> ids, bool ordered = false)
+		{
+			if (ids == null)
+				return new List<<#=recordName#>>();
+			if (ordered && !(ids is ICollection<int> || ids is IReadOnlyCollection<int>))
+				ids = ids.ToList();
+			try
+			{
+				var result = new List<<#=recordName#>>();
+				<#=a.Await#><#=dc#>.Map<#=a.Async#>(o =>
+					{
+						var record = new <#=recordName#>();
+						if (record.LoadRecord(o, 0))
+							result.Add(record);
+					}, "<#=cls.Query ?? view.GetSelectClause()#> where [<#=cls.Key ?? keyColumn.Bind#>] in " + Dc.IdFilter(ids));
+				if (!ordered || result.Count < 2)
+					return result;
+				var sorted = new List<<#=recordName#>>(result.Count);
+				foreach (var id in ids)
+				{
+					int k = result.FindIndex(o => o.<#=keyColumn.FieldName#> == id);
+					if (k >= 0)
+						sorted.Add(result[k]);
+				}
+				return sorted;
+			}
+			catch (Exception flaw)
+			{
+				flaw.Add("table", "<#=table.FullName#>")
+					.Add("ids", Dc.IdFilter(ids));
+				throw;
+			}
+		}
+<#
+			}
+		}
+
+		var collected = new List<string>();
+
+		foreach (var key in table.Fields.Where(o => o != keyColumn && o.IsUnique && o.CsType == "int"))
+		{
+			var nameItems = Strings.SplitByCapitals(key.GetPublicName());
+			int nameItemsCount = nameItems.Length;
+			if (nameItemsCount > 1 && String.Equals(nameItems[nameItemsCount-1], "id", StringComparison.OrdinalIgnoreCase))
+				--nameItemsCount;
+		    nameItems[nameItemsCount - 1] = Lingua.Plural(nameItems[nameItemsCount - 1]);
+			var methodName = String.Concat(nameItems.Take(nameItemsCount));
+			var idName = key.GetLocalName();
+			foreach (var a in asncTable)
+			{
+#>
+
+		public static <#=a.AsAsync#><#=a.Type($"List<{recordName}>")#> CollectBy<#=methodName#><#=a.Async#>(IEnumerable<int> ids, bool ordered = false)
+		{
+			if (ids == null)
+				return new List<<#=recordName#>>();
+			if (ordered && !(ids is ICollection<int> || ids is IReadOnlyCollection<int>))
+				ids = ids.ToList();
+			try
+			{
+				var result = new List<<#=recordName#>>();
+				<#=a.Await#><#=dc#>.Map<#=a.Async#>(o =>
+					{
+						var record = new <#=recordName#>();
+						if (record.LoadRecord(o, 0))
+							result.Add(record);
+					}, "<#=cls.Query ?? view.GetSelectClause()#> where [<#=key.Bind#>] in " + Dc.IdFilter(ids));
+				if (!ordered || result.Count < 2)
+					return result;
+				var sorted = new List<<#=recordName#>>(result.Count);
+				foreach (var id in ids)
+				{
+					int k = result.FindIndex(o => o.<#=key.FieldName#> == id);
+					if (k >= 0)
+						sorted.Add(result[k]);
+				}
+				return sorted;
+			}
+			catch (Exception flaw)
+			{
+				flaw.Add("table", "<#=table.FullName#>")
+					.Add("ids", Dc.IdFilter(ids));
+				throw;
+			}
+		}
+<#
+			}
+		}
+
+		foreach (var method in table.Collects)
+		{
+			var keys = method.Fields;
+			if (keys.Count == 0)
+				continue;
+			var methodName = method.NameByParameters("Collect");
+			if (collected.Contains(methodName))
+				continue;
+			collected.Add(methodName);
+
+			var queryClause = (cls.Query ?? view.GetSelectClause("o")) + (method.Joins == null ? "": " " + method.Joins) + method.MakeWhere(true) + method.MakeOrder();
+
+			string[] whereVars = method.MakeNotNulableWhereTable();
+			string chooseExpression = method.GetNotNullableTableIndex();
+			string tableName = "__" + Tool.ToCamelCase(methodName) + "Stmt";
+
+			foreach (var a in asncTable)
+			{
+#>
+
+		public static <#=a.AsAsync#><#=a.Type($"List<{recordName}>")#> <#=methodName#><#=a.Async#>(<#=method.MakeDeclaration()#>)
+		{
+			try
+			{
+				var result = new List<<#=recordName#>>();
+				<#=a.Await#><#=dc#>.Map<#=a.Async#>(o =>
+					{
+						var record = new <#=recordName#>();
+						if (record.LoadRecord(o, 0))
+							result.Add(record);
+					}, <#=chooseExpression == null ? Strings.EscapeCsString(queryClause): $"{tableName}[{chooseExpression}]"#>,
+<#
+				for (int i = 0; i < keys.Count; ++i)
+				{
+					var key = keys[i];
+#>					new SqlParameter("@<#=key.GetSqlParameterName()#>", SqlDbType.<#=key.SqlDbType#>) { Value = <#=key.GetLocalName()#><#=key.IsNullable ? " ?? (object)DBNull.Value": ""#> }<#=i == keys.Count - 1 ? ");": ","#>
+<#
+				}
+#>				return result;
+			}
+			catch (Exception flaw)
+			{
+				flaw.Add("table", "<#=table.FullName#>")
+<#
+				for (int i = 0; i < keys.Count; ++i)
+				{
+					var key = keys[i];
+#>					.Add("<#=key.GetLocalName()#>", <#=key.GetLocalName()#>)<#=i == keys.Count - 1 ? ";": ""#>
+<#
+				}
+#>
+				throw;
+			}
+		}
+<#
+			}
+			if (whereVars.Length > 0)
+			{
+#>
+		private static readonly string[] <#=tableName#> = new[]
+			{
+<#
+				for (int i = 0; i < whereVars.Length; ++i)
+				{
+#>
+				<#=Strings.EscapeCsString(queryClause + whereVars[i] + method.MakeOrder())#>,
+<#
+				}
+#>
+			};
+<#
+			}
+		}
+
+		foreach (var key in table.Fields.Where(o => o != keyColumn && !o.IsUnique && o.IsReference))
+		{
+			var name = key.GetPublicName();
+			if (name.Length > 2 && name.EndsWith("Id", StringComparison.Ordinal))
+				name = name.Substring(0, name.Length - 2);
+			if (collected.Contains("CollectBy" + name))
+				continue;
+			collected.Add("CollectBy" + name);
+			var local = key.GetLocalName();
+			foreach (var a in asncTable)
+			{
+#>
+
+		public static <#=a.AsAsync#><#=a.Type($"List<{recordName}>")#> CollectBy<#=name#><#=a.Async#>(<#=key.CsType#> <#=local#>)
+		{
+			try
+			{
+				var result = new List<<#=recordName#>>();
+				<#=a.Await#><#=dc#>.Map<#=a.Async#>(o =>
+					{
+						var record = new <#=recordName#>();
+						if (record.LoadRecord(o, 0))
+							result.Add(record);
+					}, "<#=cls.Query ?? view.GetSelectClause()#> where [<#=key.Bind#>]=@<#=name#>",
+					new SqlParameter("@<#=name#>", SqlDbType.<#=key.SqlDbType#>) { Value = <#=local#> });
+				return result;
+			}
+			catch (Exception flaw)
+			{
+				flaw.Add("table", "<#=table.FullName#>")
+					.Add("<#=local#>", <#=local#>);
+				throw;
+			}
+		}
+<#
+			}
+		}
+#>
+
+		public bool LoadRecord(System.Data.IDataRecord record, int position)
+		{
+			if (record == null)
+				throw EX.ArgumentNull("record");
+			if (position < 0)
+				throw EX.ArgumentOutOfRange("position", position);
+			if (position > record.FieldCount - <#=view.Fields.Count#>)
+				throw EX.ArgumentOutOfRange("position", position, record.FieldCount - <#=view.Fields.Count#>);
+			try
+			{
+<#
+				foreach (var key in table.KeyFields)
+				{
+#>
+				if (record.IsDBNull(position<#=key.Order > 1 ? " + " + (key.Order - 1).ToString(): ""#>))
+					return false;
+<#					
+				}
+#>
+<#
+				string prefix = "";
+				foreach (var field in view.Fields)
+				{
+					if (field.IsFixedLengthString)
+					{
+						if (field.IsNullable)
+						{
+#>
+				<#=field.FieldName#> = record.IsDBNull(<#=prefix#>position) ? null: ((string)record[position]).TrimEnd();
+<#
+						}
+						else
+						{
+#>
+				<#=field.FieldName#> = ((string)record[<#=prefix#>position]).TrimEnd();
+<#
+						}
+						continue;
+					}
+
+					string cast = "(" + field.CsType + ")";
+					if (field.CsType != field.DbCsType)
+						cast = cast + "(" + field.DbCsType + ")";
+
+					if (field.IsNullable)
+					{
+#>
+				<#=field.FieldName#> = record.IsDBNull(<#=prefix#>position) ? (<#=field.CsFieldType#>)null: <#=cast#>record[position];
+<#
+					}
+					else
+					{
+#>
+				<#=field.FieldName#> = <#=cast#>record[<#=prefix#>position];
+<#
+					}
+					prefix = "++";
+				}
+#>
+				_originalCopy = CopyRecord(_originalCopy);
+				return true;
+			}
+			catch (Exception flaw)
+			{
+				flaw.Add("position", position);
+				throw;
+			}
+		}
+<#
+		List<KeyValuePair<string, ColumnInfo>> fields = new List<KeyValuePair<string, ColumnInfo>>();
+		var controlledFields = table.Fields.Where(o => o.ControlledByDatasource).ToList();
+
+		foreach (var a in asncTable)
+		{
+			var virtualPrefix = a.IsAsync ?  "async Task<bool>": "bool";
+#>
+
+		public <#=virtualPrefix#> InsertRecord<#=a.Async#>()
+		{
+			if (!IsRecordNew)
+				return false;
+
+#if DEBUG
+			Validate().Invariant("InsertRecord", () => this.Dump());
+#endif
+			try
+			{
+				Debug.Assert(_originalCopy == null);
+
+				var insert = new SqlCommand();
+				SqlParameterCollection pp = insert.Parameters;
+<#
+			StringBuilder ins1 = new StringBuilder()
+				.Append("insert into ").Append(table.FullName).Append("(");
+			StringBuilder ins2 = new StringBuilder()
+				.Append("\nvalues(");
+
+			foreach (var field in table.Fields.Where(o => !o.ControlledByDatasource))
+			{
+				string cast = field.CsType == field.DbCsType ? "": "(" + field.DbCsFieldType + ")";
+				string nullable = field.IsNullable ? " ?? (object)DBNull.Value": "";
+				string extras = field.Length == 0 || field.SqlDbType == SqlDbType.Money ? "":
+					field.Precision == 0 ? ", Size = " + field.Size:
+					field.Scale == 0 ? ", Precision = " + field.Precision:
+						", Precision = " + field.Precision + ", Scale = " + field.Scale;
+#>
+				pp.Add(new SqlParameter("@<#=field.FieldName#>", SqlDbType.<#=field.SqlDbType#>) { Value = <#=cast#><#=field.FieldName#><#=nullable#><#=extras#> });
+<#
+					ins1.Append("[").Append(field.Bind).Append("],");
+					ins2.Append("@").Append(field.FieldName).Append(",");
+			}
+			--ins1.Length;
+			--ins2.Length;
+
+			ins1.Append(')').Append(ins2).Append(");");
+
+			bool extraCondition = false;
+			fields.Clear();
+
+			if (controlledFields.Count > 0 && table.KeyFields.Count > 0)
+			{
+				if (table.KeyFields.Count == 1 && table.KeyFields[0].IsIdentity)
+				{
+					var id = table.KeyFields[0];
+					fields.Add(new KeyValuePair<string, ColumnInfo>("p0", id));
+#>
+				SqlParameter p0 = new SqlParameter("@<#=id.FieldName#>", SqlDbType.<#=id.SqlDbType#>) { Direction = ParameterDirection.Output };
+				pp.Add(p0);
+<#
+					if (controlledFields.Count == 1)
+					{
+						ins1.Append("\nset @").Append(id.FieldName).Append("=scope_identity();");
+					}
+					else
+					{
+						ins1.Append("\nselect @").Append(id.FieldName).Append("=[").Append(id.Bind).Append("]");
+						int i = 1;
+						foreach (var field in controlledFields)
+						{
+							if (field == id)
+								continue;
+							string name = string.Format("p{0}", i);
+							fields.Add(new KeyValuePair<string, ColumnInfo>(name, field));
+#>
+				SqlParameter <#=name#> = new SqlParameter("@<#=field.FieldName#>", SqlDbType.<#=field.SqlDbType#>) { Direction = ParameterDirection.Output };
+				pp.Add(<#=name#>);
+<#
+							ins1.Append(",@").Append(field.FieldName).Append("=[").Append(field.Bind).Append("]");
+							++i;
+						}
+						ins1.Append(" from ").Append(table.FullName).Append(" where [").Append(id.Bind).Append("]=scope_identity();");
+					}
+				}
+				else
+				{
+					ins1.Append("\nselect ");
+					int i = 0;
+					foreach (var field in controlledFields)
+					{
+						++i;
+						string name = string.Format("p{0}", i);
+						fields.Add(new KeyValuePair<string, ColumnInfo>(name, field));
+						string extras = field.Length == 0 || field.SqlDbType == SqlDbType.Money ? "":
+							field.Precision == 0 ? ", Size = " + field.Size:
+							field.Scale == 0 ? ", Precision = " + field.Precision:
+								", Precision = " + field.Precision + ", Scale = " + field.Scale;
+#>
+				SqlParameter <#=name#> = new SqlParameter("@<#=field.FieldName#>", SqlDbType.<#=field.SqlDbType#>) { Direction = ParameterDirection.Output<#=extras#> };
+				pp.Add(<#=name#>);
+<#
+						ins1.Append("@").Append(field.FieldName).Append("=[").Append(field.Bind).Append("],");
+					}
+					--ins1.Length;
+					ins1.Append(" from ").Append(table.FullName);
+					extraCondition = true;
+				}
+			}
+
+			string[] clause = ins1.ToString().Split('\n');
+
+#>
+				string command = <#=Strings.EscapeCsString(clause[0])#><#=clause.Length == 0 ? ";": " +"#>
+<#
+			for (int i = 1; i < clause.Length; ++i)
+			{
+					bool last = !extraCondition && i == clause.Length - 1;
+#>
+					<#=Strings.EscapeCsString("\r\n" + clause[i])#><#=last ? ";": " +"#>
+<#
+			}
+			if (extraCondition)
+			{
+				string pad = "\\r\\nwhere";
+				for (int k = 0; k < table.KeyFields.Count; ++k)
+				{
+					var field = table.KeyFields[k];
+					bool last = k == table.KeyFields.Count - 1;
+#>
+					"<#=pad#> [<#=field.Bind#>]" + Dc.Equal(<#=field.FieldName#>)<#=last ? ";": " +"#>
+<#
+					pad = "and";
+				}
+			}
+#>
+				insert.CommandText = command;
+				<#=a.Await#><#=dc#>.Execute<#=a.Async#>(insert);
+
+<#
+			foreach (var pair in fields)
+			{
+						string cast = "(" + pair.Value.CsType + ")";
+						if (pair.Value.CsType != pair.Value.DbCsType)
+							cast = cast + "(" + pair.Value.DbCsFieldType + ")";
+#>
+				<#=pair.Value.FieldName#> = <#=cast#><#=pair.Key#>.Value;
+<#
+			}
+#>
+				_originalCopy = CopyRecord(_originalCopy);
+				return true;
+			}
+			catch (Exception flaw)
+			{
+				flaw.Add("table", "<#=table.FullName#>")
+					.Add("Dump", this.Dump());
+				throw;
+			}
+		}
+<#
+		}
+
+		if (table.KeyFields.Count > 0)
+		{
+			foreach (var a in asncTable)
+			{
+				var virtualPrefix = a.IsAsync ?  "async Task<bool>": "bool";
+#>
+
+		public <#=virtualPrefix#> UpdateRecord<#=a.Async#>()
+		{
+			if (!IsRecordModified)
+				return false;
+
+#if DEBUG
+			Validate().Invariant("UpdateRecord", () => this.Dump());
+#endif
+			try
+			{
+				Debug.Assert(_originalCopy != null);
+
+				var update = new SqlCommand();
+				var text = new StringBuilder("update <#=table.FullName#> set ");
+
+				var pp = update.Parameters;
+<#
+				foreach (var field in table.Fields.Where(o => !o.ControlledByDatasource))
+				{
+					string cast = field.CsType == field.DbCsType ? "": "(" + field.DbCsFieldType + ")";
+					string nullable = field.IsNullable ? " ?? (object)DBNull.Value": "";
+					string extras = field.Length == 0 || field.SqlDbType == SqlDbType.Money ? "":
+						field.Precision == 0 ? ", Size = " + field.Size:
+						field.Scale == 0 ? ", Precision = " + field.Precision:
+							", Precision = " + field.Precision + ", Scale = " + field.Scale;
+#>
+				if (<#=field.FieldName#> != _originalCopy.<#=field.FieldName#>)
+				{
+					pp.Add(new SqlParameter("@<#=field.FieldName#>", SqlDbType.<#=field.SqlDbType#>) { Value = <#=cast#><#=field.FieldName#><#=nullable#><#=extras#> });
+					text.Append("[<#=field.Bind#>]=@<#=field.FieldName#>,");
+				}
+<#
+				} // for by table.Fields
+
+				fields.Clear();
+				string condition;
+				StringBuilder text = new StringBuilder();
+				string pad = "";
+				int i = 0;
+				foreach (var field in table.KeyFields)
+				{
+					++i;
+					string name = string.Format("p{0}", i);
+					string cast = field.CsType == field.DbCsType ? "": "(" + field.DbCsFieldType + ")";
+					string nullable = field.IsNullable ? " ?? (object)DBNull.Value": "";
+					string extras = field.Length == 0 || field.SqlDbType == SqlDbType.Money ? "":
+						field.Precision == 0 ? ", Size = " + field.Size:
+						field.Scale == 0 ? ", Precision = " + field.Precision:
+							", Precision = " + field.Precision + ", Scale = " + field.Scale;
+#>
+				var <#=name#> = new SqlParameter("@<#=name#>", SqlDbType.<#=field.SqlDbType#>) { Value = <#=cast#>_originalCopy.<#=field.FieldName#><#=nullable#><#=extras#> };
+				pp.Add(<#=name#>);
+<#
+					fields.Add(new KeyValuePair<string, ColumnInfo>(string.Format("p{0}", i), field));
+					string paramName = "@" + name;
+					string bindName = "[" + field.Bind + "]";
+					if (field.IsNullable)
+						text.Append(pad).Append("(").Append(bindName).Append("is null and ").Append(paramName).Append(" is null")
+							.Append(" or ").Append(bindName).Append("=").Append(paramName).Append(")");
+					else
+						text.Append(pad).Append(bindName).Append("=").Append(paramName);
+					pad = " and ";
+				}
+				condition = text.ToString();
+
+				var timestamp = controlledFields.FirstOrDefault(o => o.IsTimestamp);
+				if (timestamp != null)
+				{
+#>
+				var pX = new SqlParameter("@<#=timestamp.FieldName#>", SqlDbType.Timestamp) { Direction = ParameterDirection.Output };
+				pp.Add(pX);
+
+				--text.Length;
+				text.Append("\r\nwhere <#=condition#>;")
+					.Append("\r\nselect @<#=timestamp.FieldName#>=[<#=timestamp.Bind#>] from <#=table.FullName#> where <#=condition#>");
+<#
+				}
+				else
+				{
+#>
+
+				--text.Length;
+				text.Append("\r\nwhere <#=condition#>;");
+<#
+				}
+#>
+				update.CommandText = text.ToString();
+				<#=a.Await#><#=dc#>.Execute<#=a.Async#>(update);
+<#
+				if (timestamp != null)
+				{
+#>
+				<#=timestamp.FieldName#> = (RowVersion)(byte[])pX.Value;
+<#
+				}
+#>
+				_originalCopy = CopyRecord(_originalCopy);
+				return true;
+			}
+			catch (Exception flaw)
+			{
+				flaw.Add("table", "<#=table.FullName#>")
+					.Add("Dump", this.Dump());
+				throw;
+			}
+		}
+<#
+			} // end for asyncTable
+#>
+
+		public bool SaveChanges()
+		{
+			return IsRecordNew ? InsertRecord(): UpdateRecord();
+		}
+
+		public Task<bool> SaveChangesAsync()
+		{
+			return IsRecordNew ? InsertRecordAsync(): UpdateRecordAsync();
+		}
+<#
+		} // if (table.KeyFields.Count > 0)
+
+		if (table.Loads.Count > 0)
+		{
+			foreach (var a in asncTable)
+			{
+				foreach (var method in table.Loads)
+				{
+					if (method.Delete != true)
+						continue;
+					var keys = method.Fields;
+#>
+
+		public static <#=a.AsAsync#><#=a.Type("bool")#> Delete<#=a.Async#>(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		{
+			return <#=a.Await#><#=dc#>.Execute<#=a.Async#>("delete from <#=table.FullName#> where <#=string.Join(" and ", keys.Select(o=> "[" + o.Bind + "]=@" + Tool.NormalizeName(o.Name, NameStyle.PublicName)))#>", <#=string.Join(", ", keys.Select(o=> "new SqlParameter(\"@" + Tool.NormalizeName(o.Name, NameStyle.PublicName) + "\", SqlDbType." + o.SqlDbType + ") { Value = " + Tool.NormalizeName(o.Name, NameStyle.LocalName) + " }"))#>) > 0;
+		}
+<#
+				}
+			}
+		}
+#>
+<#
+		List<(ColumnInfo Field, string Expression)> validators = table.Fields
+			.Where(f => !f.IsIdentity)
+			.SelectMany(o => o.ValidationExpression.Where(o => !String.IsNullOrEmpty(o))
+			.Select(x => (o, x)))
+			.ToList();
+		if (validators.Count == 0)
+		{
+#>
+
+		public ValidationResults Validate()
+		{
+			return ValidationResults.Empty;
+		}
+<#
+		}
+		else if (validators.Count == 1)
+		{
+#>
+
+		public ValidationResults Validate()
+		{
+			return IsRecordNew || <#=validators[0].Field.FieldName#> != _originalCopy.<#=validators[0].Field.FieldName#> ? <#=validators[0].Expression#>: ValidationResults.Empty;
+		}
+<#
+		}
+		else
+		{
+#>
+
+		public ValidationResults Validate()
+		{
+<#
+			if (validators.Count == 0)
+			{
+#>			return _originalCopy == null ? ValidationResults.Empty:
+<#
+			}
+			else
+			{
+#>			return _originalCopy == null ?
+				ValidationResults.Create(
+<#
+				for (int i = 0; i < validators.Count; ++i)
+				{
+#>					<#=validators[i].Expression#><#=i == validators.Count - 1 ? "):": ","#>
+<#
+				}
+#>				ValidationResults.Create(
+<#
+				for (int i = 0; i < validators.Count; ++i)
+				{
+#>					<#=validators[i].Field.FieldName#> == _originalCopy.<#=validators[i].Field.FieldName#> ? null: <#=validators[i].Expression#><#=i == validators.Count - 1 ? ");": ","#>
+<#
+				}
+#>
+		}
+<#
+			}
+		}
+#>
+
+		public DumpWriter DumpContent(DumpWriter writer)
+		{
+			if (writer == null)
+				return null;
+			try
+			{
+				<#=recordName#> copy = _originalCopy ?? this;
+<#
+		string comma = "";
+		foreach (var field in view.Fields)
+		{
+#>				writer.Text("<#=comma + field.FieldName#>=").Dump(<#=field.FieldName#>); if (<#=field.FieldName#> != copy.<#=field.FieldName#>) writer.Text("(+)");
+<#
+			comma = ",";
+		}
+#>
+			}
+			catch
+			{
+			}
+			return writer;
+		}
+
+		public <#=recordName#> MakeACopy(<#=recordName#> that = null)
+		{
+			if (that == null || that == _emptyRecord)
+				that = new <#=recordName#>();
+
+<#
+		foreach (var field in view.Fields.Where(o => !o.ControlledByDatasource && o.IsDeterministic))
+		{
+#>			that.<#=field.FieldName#> = <#=field.FieldName#>;
+<#
+		}
+#>			return that;
+		}
+
+		private <#=recordName#> CopyRecord(<#=recordName#> that)
+		{
+<#
+		var computedFields = view.Fields.Where(o => o.ControlledByDatasource || !o.IsDeterministic).ToList();
+		if (computedFields.Count == 0)
+		{
+#>			return MakeACopy(that);
+<#
+		}
+		else
+		{
+#>			that = MakeACopy(that);
+<#
+			foreach (var field in computedFields)
+			{
+#>			that.<#=field.FieldName#> = this.<#=field.FieldName#>;
+<#
+			}
+#>			return that;
+<#
+		}
+#>
+		}
+	}
+<#
+	}
+#>
+}

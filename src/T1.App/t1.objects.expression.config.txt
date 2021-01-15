@@ -1,0 +1,31 @@
+    expression
+        %item   type        find                        replace
+        -       DateTime    ^Year$                      {{LocalTime}}.Year
+        -       DateTime    \bNow\b                     {{LocalTime}}
+            :continue true
+        -       DateTime    \bToday\b                   {{LocalTime}}.Date
+            :continue true
+        -       DateTime    (?:([1-9]\d)|0?(\d))/(?:([1-9]\d)|0?(\d))/(\d{4}) new DateTime($5, $1$2, $3$4)
+        -       TimeSpan    (\d+(\.\d+))                TimeSpan.FromDays($1)
+        -       decimal     ^([+-]?\d+(\.\d+)?)$        $1m
+        -       decimal     ^([+-]?\d+\.)$              ${1}0m
+        -       decimal     ^([+-])?(\.\d*)$            ${1}0$2m
+        -       double      ^([+-]?\d+)$                $1.0
+        -       double      ^([+-])?(\.\d+)$            ${1}0.$2
+        -       double      ^([+-]?\d+\.)$              ${1}0
+        -       bool        ^0$                         false
+        -       bool        ^1$                         true
+
+    validation
+        // Validation rules definitions
+        %item   type        find                        replace
+        -       string      ^phone$                     FieldValidator.PhoneNumber({{FieldName}}, {{Length}}, "{{ReferenceName}}", {{NullableCondition}})
+        -       string      ^email$                     FieldValidator.EmailAddress({{FieldName}}, {{Length}}, "{{ReferenceName}}", {{NullableCondition}})
+        -       string      ^url$                       FieldValidator.HttpAddress({{FieldName}}, {{Length}}, "{{ReferenceName}}", {{NullableCondition}})
+        -       string      ^unique$                    FieldValidator.UniqueField({{FieldName}}, {{Length}}, "{{TableName}}", "{{Bind}}", "{{Key}}", {{Key}}, "{{ReferenceName}}", {{NullableCondition}})
+        -       int?        ^unique$                    FieldValidator.UniqueField({{FieldName}}, "{{TableName}}", "{{Bind}}", "{{Key}}", {{Key}}, "{{ReferenceName}}", {{NullableCondition}})
+        -       int         ^unique$                    FieldValidator.UniqueField({{FieldName}}, "{{TableName}}", "{{Bind}}", "{{Key}}", {{Key}}, "{{ReferenceName}}")
+        -       int?        ^ref$                       FieldValidator.ReferenceKeyDebug({{FieldName}}, "{{ReferenceName}}")
+        -       int         ^ref$                       FieldValidator.ReferenceKeyDebug({{FieldName}}, "{{ReferenceName}}")
+        -       int?        ^ref\s+(.+?)(?:\.(ID))?$    FieldValidator.ReferenceKeyDebug({{FieldName}}, "{{$1}}", "{{ReferenceName}}")
+        -       int         ^ref\s+(.+?)(?:\.(ID))?$    FieldValidator.ReferenceKeyDebug({{FieldName}}, "{{$1}}", "{{ReferenceName}}")

@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <LangVersion>9.0</LangVersion>
+
+    <VersionPrefix>1.5.4</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <!--Build>0$([System.DateTime]::Today.ToString("MMdd"))</Build-->
+    <Build>0</Build>
+    <FileVersion>$(VersionPrefix).$(Build)</FileVersion>
+    <Description>Database to objects T4 template</Description>
+    <Copyright>Copyright © 2001-2016</Copyright>
+    <Authors>Kraft Pro Utilities</Authors>
+    <AssemblyName>Lexxys.T1</AssemblyName>
+    <RootNamespace>Lexxys.T1</RootNamespace>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <AnalysisLevel>5</AnalysisLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Lexxys\src\Lexxys\Lexxys.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="data.config.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="t1.config.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Templates\DataTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DataTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ObjectTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ObjectTemplate.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Templates\DataTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DataTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ObjectTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ObjectTemplate.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

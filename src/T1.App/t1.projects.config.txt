@@ -1,0 +1,27 @@
+﻿projects
+
+	defaults
+		usePropertyNameInValidation false
+		expression
+			# Named expressions
+			staticContext		Dc
+			timestamp			DateTime.UtcNow
+			localTime			DateTime.Now
+			utcTime				DateTime.UtcNow
+			user				Context.UserId
+		namespace	School
+		implements
+		using		[ School.Collections ]
+
+	projects
+		%project						name
+		%project/classes/using/item
+		%project/entities/item			database schema kind
+		%project/entities/item/(*)/item
+
+		/**** CPBASE ****/
+		project School
+			entities
+				-	School	dbo	U
+					exclude
+						-	DraftTable

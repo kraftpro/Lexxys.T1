@@ -1,0 +1,17 @@
+classes
+    %%include t1.objects.expression.config.txt
+
+    %class                  name table
+    %class/rename           original destination
+    %class/validate         field expression
+    %class/initialize       field value
+    %class/reference        field table
+    %class/collect          parameters
+    %class/load             parameters
+
+    class Person
+        table               Person
+        validate            HireDate range 1/1/1990 : Today
+
+    class Department
+    class OnlineCourse

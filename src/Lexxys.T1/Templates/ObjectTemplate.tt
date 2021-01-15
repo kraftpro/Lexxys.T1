@@ -1,0 +1,442 @@
+﻿<#@ parameter type="Lexxys.T1.TableInfo" name="table" #>
+<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+/*
+	Server: <#=Lexxys.Config.GetValue<Lexxys.ConnectionStringInfo>("database.connection").Server#>
+	File: <#=table.PublicName#>.cs (v <#=System.Reflection.Assembly.GetExecutingAssembly().GetName().Version#> at <#=DateTime.UtcNow.ToString("u")#>)
+*/
+using System;
+using System.Collections.Generic;
+using Assertion = System.Diagnostics.Contracts.Contract;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Lexxys;
+<#
+foreach (var u in Project.Using)
+{
+	if (String.IsNullOrEmpty(u))
+		continue;
+	var v = u.Trim();
+	if (!v.EndsWith(";"))
+		v += ";";
+#>
+using <#=v#>
+<#
+}
+var objNamespace = Project.Namespace ?? "Entities";
+#>
+
+namespace <#=objNamespace#>
+{
+	using Data;
+
+<#
+	var cls = table.Class;
+	string className = table.PublicName;
+	string recordName = className + "Record";
+	ColumnInfo keyColumn = table.KeyFields.Count == 1 ? table.KeyFields[0]: ColumnInfo.DefaultIdKey;
+	TableInfo view = table.View;
+#>
+	public class <#=className#>: IDump
+	{
+		//private static readonly Logger Log => __log ??= new Logger("<#=objNamespace.Substring(objNamespace.LastIndexOf('.') + 1) + "." + className#>");
+		//private static Logger __log;
+
+		private readonly <#=recordName#> _record;
+
+		public <#=className#>(): this(new <#=recordName#>())
+		{
+		}
+
+		private <#=className#>(<#=recordName#> record)
+		{
+			_record = record ?? throw new ArgumentNullException(nameof(record));
+		}
+
+		#region Auto Properties
+
+<#
+	foreach (var field in view.Fields)
+	{
+		if (field.IsExcluded)
+			continue;
+
+		if (!field.IsReadonly && !field.IsProtected && !field.IsPrivate && !field.IsPrimaryKey && !field.IsIdentity && !field.IsComputed && !String.Equals(field.Bind, "DtCreated", StringComparison.OrdinalIgnoreCase) && !String.Equals(field.Bind, "ID", StringComparison.OrdinalIgnoreCase))
+		{
+#>		public <#=field.CsFieldType#> <#=field.FieldName#> { get => _record.<#=field.FieldName#>; set => _record.<#=field.FieldName#> = <#=
+				field.CsType == "string" ? "value.TrimToNull()":
+				field.CsType == "byte[]" ? "value == null || value.Length == 0 ? null: value": "value"
+				#>; }
+
+<#
+		}
+		else
+		{
+#>		public <#=field.CsFieldType#> <#=field.FieldName#> => _record.<#=field.FieldName#>;
+
+<#
+		}
+	}
+#>
+		public bool IsModified => _record.IsRecordModified;
+
+		public bool IsNew => _record.IsRecordNew;
+
+		#endregion
+
+		public ValidationResults Validation { get; set; }
+
+		public bool TryUpdate()
+		{
+			if (!IsModified)
+				return SetValidated();
+<#
+	if (view.Fields.Any(o => !o.IsExcluded && o.FieldName == "DateDeleted"))
+	{
+#>
+			if (DateDeleted != null && IsNew)
+				return true;
+<#
+	}
+#>
+			if (!Validate().Success)
+				return false;
+			try
+			{
+				_record.SaveChanges();
+				return true;
+			}
+			catch (Exception flaw)
+			{
+				flaw.Add("this", this.Dump());
+				throw;
+			}
+		}
+
+		public async Task<bool> TryUpdateAsync()
+		{
+			if (!IsModified)
+				return SetValidated();
+<#
+	if (view.Fields.Any(o => !o.IsExcluded && o.FieldName == "DateDeleted"))
+	{
+#>
+			if (DateDeleted != null && IsNew)
+				return true;
+<#
+	}
+#>
+			if (!Validate().Success)
+				return false;
+			try
+			{
+				await _record.SaveChangesAsync();
+				return true;
+			}
+			catch (Exception flaw)
+			{
+				flaw.Add("this", this.Dump());
+				throw;
+			}
+		}
+
+		private bool SetValidated()
+		{
+			Validation = ValidationResults.Empty;
+			return true;
+		}
+
+		public ValidationResults Validate()
+		{
+			Assertion.Ensures(Assertion.Result<ValidationResults>() != null);
+
+			var results = _record.Validate();
+			return Validation = results;
+		}
+
+		public void Update()
+		{
+			if (!TryUpdate())
+				Validation.Invariant("Update", () => this.Dump());
+		}
+
+		public async Task UpdateAsync()
+		{
+			if (!await TryUpdateAsync())
+				Validation.Invariant("UpdateAsync", () => this.Dump());
+		}
+<#
+	foreach (var method in table.Loads)
+	{
+		var keys = method.Fields;
+		if (keys.Count == 0)
+			continue;
+		var methodName = method.NameByParameters("Load");
+#>
+
+		public static <#=className#> Try<#=methodName#>(<#=string.Join(", ", keys.Select(o => o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		{
+			var record = <#=recordName#>.<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>);
+			return record == null ? null: new <#=className#>(record);
+		}
+
+		public static async Task<<#=className#>> Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		{
+			var record = await <#=recordName#>.<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>);
+			return record == null ? null: new <#=className#>(record);
+		}
+<#
+	}
+
+	foreach (var method in table.Loads)
+	{
+		var keys = method.Fields;
+		if (keys.Count == 0)
+			continue;
+		var methodName = method.NameByParameters("Load");
+#>
+
+		public static <#=className#> <#=methodName#>(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		{
+			Assertion.Ensures(Assertion.Result<<#=className#>>() != null);
+<#
+			if (keys.Count == 1) {
+#>
+			return Try<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>) ?? throw EX.ArgumentOutOfRange(nameof(<#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>), <#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>);
+<#
+			}
+			else
+			{
+#>
+			return Try<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>) ?? throw EX.ArgumentOutOfRange($"(<#=string.Join(",", keys.Select(o=> "{nameof(" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")}"))#>)", (<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>));
+<#
+			}
+#>
+		}
+
+		public static async Task<<#=className#>> <#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		{
+			Assertion.Ensures(Assertion.Result<<#=className#>>() != null);
+<#
+			if (keys.Count == 1) {
+#>
+			return await Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>) ?? throw EX.ArgumentOutOfRange("<#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>", <#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>);
+<#
+			}
+			else
+			{
+#>
+			return await Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>) ?? throw EX.ArgumentOutOfRange().<#=string.Join(".", keys.Select(o=> "Add(\"" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + "\", " + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")"))#>;
+<#
+			}
+#>
+		}
+<#
+	} // end of table.Load
+
+	if (table.Loads.Any(o => o.Fields.Count == 1 && String.Equals(o.Fields[0].Name, "Id", StringComparison.OrdinalIgnoreCase)))
+	{
+		var method = table.Loads.First(o => o.Fields.Count == 1 && String.Equals(o.Fields[0].Name, "Id", StringComparison.OrdinalIgnoreCase));
+		var key = method.Fields[0];
+		var keyName = Tool.NormalizeName(key.Name, NameStyle.LocalName);
+		var methodName = method.NameByParameters("Load");
+		var method2Name = method.Name == "Load" ? "LoadOrCreate": method.NameByParameters("LoadOrCreate");
+#>
+
+		public static <#=className#> <#=method2Name#>(<#=key.NullabeCsType#> <#=keyName#>)
+		{
+			Assertion.Ensures(Assertion.Result<<#=className#>>() != null);
+			return Check.IsId(<#=keyName#>) ? <#=methodName#>(<#=keyName#><#=key.CliType.IsValueType ? ".GetValueOrDefault()": ""#>): new <#=className#>();
+		}
+
+		public static async Task<<#=className#>> <#=method2Name#>Async(<#=key.NullabeCsType#> <#=keyName#>)
+		{
+			Assertion.Ensures(Assertion.Result<<#=className#>>() != null);
+			return Check.IsId(<#=keyName#>) ? await <#=methodName#>Async(<#=keyName#><#=key.CliType.IsValueType ? ".GetValueOrDefault()": ""#>): new <#=className#>();
+		}
+<#
+	}
+
+	if (view.Fields.Any(o => !o.IsExcluded && o.FieldName == "DateDeleted"))
+	{
+		var user = Project.Expression["user()"];
+#>
+
+		public void Delete()
+		{
+			_record.DateDeleted = <#=Project.Expression["timestamp"]#>;
+<#
+		if (user == null)
+		{
+#>
+			if (!IsNew)
+				Update();
+<#
+		}
+		else
+		{
+#>
+			if (IsNew)
+				_record.DeletedBy = <#=user#>;
+			else
+				Update();
+<#
+		}
+#>
+		}
+
+		public async Task DeleteAsync()
+		{
+			_record.DateDeleted = <#=Project.Expression["timestamp"]#>;
+<#
+		if (user == null)
+		{
+#>
+			if (!IsNew)
+				UpdateAsync();
+<#
+		}
+		else
+		{
+#>
+			if (IsNew)
+				_record.DeletedBy = <#=user#>;
+			else
+				UpdateAsync();
+<#
+		}
+#>
+		}
+<#
+	}
+
+	foreach (var method in table.Loads)
+	{
+		if (method.Delete == false || !(method.Delete == true || method.Where == null))
+			continue;
+		var keys = method.Fields;
+		if (keys.Count == 0)
+			continue;
+#>
+
+		//public static bool Delete(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		//{
+		//	return <#=recordName#>.Delete(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>);
+		//}
+
+		//public static Task<bool> DeleteAsync(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		//{
+		//	return <#=recordName#>.DeleteAsync(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>);
+		//}
+<#
+	}
+#>
+
+		public DumpWriter DumpContent(DumpWriter writer)
+		{
+			return _record.DumpContent(writer);
+		}
+
+		#region Collect
+<#
+	if (table.KeyFields.Count == 1) {
+#>
+
+		public static IEnumerable<<#=className#>> Collect(IEnumerable<int> ids, bool ordered = false)
+		{
+			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
+			return <#=recordName#>.Collect(ids, ordered).Select(o=> new <#=className#>(o));
+		}
+
+		public static async Task<IEnumerable<<#=className#>>> CollectAsync(IEnumerable<int> ids, bool ordered = false)
+		{
+			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
+			return (await <#=recordName#>.CollectAsync(ids, ordered)).Select(o=> new <#=className#>(o));
+		}
+<#
+	}
+
+	List<string> collected = new List<string>();
+
+	foreach (var key in table.Fields.Where(o => o.IsUnique && o != keyColumn && o.CsType == "int"))
+	{
+		var name = key.FieldName;
+		var idName = name.Substring(0, 1).ToLowerInvariant() + name.Substring(1);
+		if (name.EndsWith("Id", StringComparison.Ordinal))
+			name = name.Substring(0, name.Length - 2);
+		if (collected.Contains(name))
+			continue;
+		collected.Add(name);
+#>
+
+		public static IEnumerable<<#=className#>> CollectBy<#=name#>(IEnumerable<int> ids, bool ordered = false)
+		{
+			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
+			return <#=recordName#>.CollectBy<#=name#>(ids, ordered).Select(o=> new <#=className#>(o));
+		}
+
+		public static async Task<IEnumerable<<#=className#>>> CollectBy<#=name#>Async(IEnumerable<int> ids, bool ordered = false)
+		{
+			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
+			return (await <#=recordName#>.CollectBy<#=name#>Async(ids, ordered)).Select(o=> new <#=className#>(o));
+		}
+<#
+	}
+
+	foreach (var key in table.Fields.Where(o => o.Reference != null && o != keyColumn && !o.IsUnique))
+	{
+		var name = key.FieldName;
+		var idName = name.Substring(0, 1).ToLowerInvariant() + name.Substring(1);
+		if (name.EndsWith("Id", StringComparison.Ordinal))
+			name = name.Substring(0, name.Length - 2);
+		if (collected.Contains(name))
+			continue;
+		collected.Add(name);
+#>
+
+		public static IEnumerable<<#=className#>> CollectBy<#=name#>(<#=key.CsType#> <#=idName#>)
+		{
+			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
+			return <#=recordName#>.CollectBy<#=name#>(<#=idName#>).Select(o=> new <#=className#>(o));
+		}
+
+		public static async Task<IEnumerable<<#=className#>>> CollectBy<#=name#>Async(<#=key.CsType#> <#=idName#>)
+		{
+			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
+			return (await <#=recordName#>.CollectBy<#=name#>Async(<#=idName#>)).Select(o=> new <#=className#>(o));
+		}
+<#
+	}
+
+	foreach (var method in table.Collects)
+	{
+		if (method.Fields.Count == 0)
+			continue;
+		var name = method.NameByParameters("Collect");
+		if (collected.Contains(name))
+			continue;
+		collected.Add(name);
+#>
+
+		public static IEnumerable<<#=className#>> <#=name#>(<#=method.MakeDeclaration()#>)
+		{
+			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
+			return <#=recordName#>.<#=name#>(<#=method.MakeParameters()#>).Select(o=> new <#=className#>(o));
+		}
+
+		public static async Task<IEnumerable<<#=className#>>> <#=name#>Async(<#=method.MakeDeclaration()#>)
+		{
+			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
+			return (await <#=recordName#>.method<#=name#>Async(<#=method.MakeParameters()#>)).Select(o=> new <#=className#>(o));
+		}
+<#
+	}
+#>
+
+		#endregion
+	}
+}

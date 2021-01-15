@@ -1,0 +1,21 @@
+﻿configuration
+
+	parameters
+		generateAllObjects true
+
+	database
+		connection
+			:server				(local)
+			:database			School
+
+	logging
+		logger
+			:class	TextFileLogWriter
+			:file	t1.app.log
+
+			rule
+				:level VERBOSE
+
+	include t1.data.config.txt
+	include t1.objects.config.txt
+	include t1.projects.config.txt
