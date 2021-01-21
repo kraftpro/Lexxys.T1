@@ -239,7 +239,7 @@ namespace Lexxys.T1
 
 			return
 				rangesCount == 1 && valuesCount == 0 ? $"FieldValidator.FieldValue({col.FieldName}, {min}, {max}, \"{referenceName}\")" :
-				rangesCount > 0 ? $"FieldValidator.Range({col.FieldName}, ({col.CsType}, {col.CsType})[] {{{ranges}}}, \"{referenceName}\")" :
+				rangesCount > 0 ? $"FieldValidator.Range({col.FieldName}, new ({col.CsType}, {col.CsType})[] {{{ranges}}}, \"{referenceName}\")" :
 				valuesCount > 0 ? $"FieldValidator.Range({col.FieldName}, new {col.CsType}[] {{{values}}}, \"{referenceName}\")" : null;
 		}
 
