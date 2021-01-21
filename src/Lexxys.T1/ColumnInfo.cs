@@ -86,11 +86,11 @@ namespace Lexxys.T1
 			var validates = Validators;
 			string name = _class.GetFieldName(this);
 			if (validates.Count > 0)
-			{
-				var result = validates.Select(o => o.GetExpression(_class, this, Tool.Function(Template.ClassesConfig.Expression))).Where(o => o != null).ToList();
-				if (result.Count > 0)
-					return result;
-			}
+				return validates
+					.Select(o => o.GetExpression(_class, this, Tool.Function(Template.ClassesConfig.Expression)))
+					.Where(o => o != null)
+					.ToIReadOnlyList();
+
 			var v = ValidationConfig.GetDefaultExpression(_class, this, Tool.Function(Template.ClassesConfig.Expression));
 			return v == null ? Array.Empty<string>() : new[] { v };
 		}

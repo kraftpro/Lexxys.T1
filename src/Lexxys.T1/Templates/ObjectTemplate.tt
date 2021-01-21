@@ -65,7 +65,7 @@ namespace <#=objNamespace#>
 		if (field.IsExcluded)
 			continue;
 
-		if (!field.IsReadonly && !field.IsProtected && !field.IsPrivate && !field.IsPrimaryKey && !field.IsIdentity && !field.IsComputed && !String.Equals(field.Bind, "DtCreated", StringComparison.OrdinalIgnoreCase) && !String.Equals(field.Bind, "ID", StringComparison.OrdinalIgnoreCase))
+		if (!field.IsReadonly && !field.IsProtected && !field.IsPrivate && !field.IsPrimaryKey && !field.IsIdentity && !field.IsComputed && field.InitializationExpression == null)
 		{
 #>		public <#=field.CsFieldType#> <#=field.FieldName#> { get => _record.<#=field.FieldName#>; set => _record.<#=field.FieldName#> = <#=
 				field.CsType == "string" ? "value.TrimToNull()":
@@ -263,7 +263,7 @@ namespace <#=objNamespace#>
 
 	if (view.Fields.Any(o => !o.IsExcluded && o.FieldName == "DateDeleted"))
 	{
-		var user = Project.Expression["user()"];
+		var user = Project.Expression["user"];
 #>
 
 		public void Delete()
@@ -297,7 +297,7 @@ namespace <#=objNamespace#>
 		{
 #>
 			if (!IsNew)
-				UpdateAsync();
+				await UpdateAsync();
 <#
 		}
 		else
@@ -306,7 +306,7 @@ namespace <#=objNamespace#>
 			if (IsNew)
 				_record.DeletedBy = <#=user#>;
 			else
-				UpdateAsync();
+				await UpdateAsync();
 <#
 		}
 #>

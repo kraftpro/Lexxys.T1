@@ -6,7 +6,7 @@
 <#@import namespace="Lexxys" #>
 /*
 	Server: <#=Lexxys.Config.GetValue<Lexxys.ConnectionStringInfo>("database.connection").Server#>
-	Version <#=System.Reflection.Assembly.GetEntryAssembly().GetName().Version#> at <#=DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")#>
+	Version <#=System.Reflection.Assembly.GetEntryAssembly().GetName().Version#> at <#=DateTime.UtcNow.ToString("u")#>
 */
 using System;
 using System.Collections.Generic;

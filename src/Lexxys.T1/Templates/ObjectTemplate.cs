@@ -169,7 +169,7 @@ var objNamespace = Project.Namespace ?? "Entities";
 		if (field.IsExcluded)
 			continue;
 
-		if (!field.IsReadonly && !field.IsProtected && !field.IsPrivate && !field.IsPrimaryKey && !field.IsIdentity && !field.IsComputed && !String.Equals(field.Bind, "DtCreated", StringComparison.OrdinalIgnoreCase) && !String.Equals(field.Bind, "ID", StringComparison.OrdinalIgnoreCase))
+		if (!field.IsReadonly && !field.IsProtected && !field.IsPrivate && !field.IsPrimaryKey && !field.IsIdentity && !field.IsComputed && field.InitializationExpression == null)
 		{
 
             
@@ -870,7 +870,7 @@ var objNamespace = Project.Namespace ?? "Entities";
 
 	if (view.Fields.Any(o => !o.IsExcluded && o.FieldName == "DateDeleted"))
 	{
-		var user = Project.Expression["user()"];
+		var user = Project.Expression["user"];
 
             
             #line default
@@ -936,7 +936,7 @@ var objNamespace = Project.Namespace ?? "Entities";
             
             #line default
             #line hidden
-            this.Write("\t\t\tif (!IsNew)\r\n\t\t\t\tUpdateAsync();\r\n");
+            this.Write("\t\t\tif (!IsNew)\r\n\t\t\t\tawait UpdateAsync();\r\n");
             
             #line 301 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
@@ -954,7 +954,7 @@ var objNamespace = Project.Namespace ?? "Entities";
             
             #line default
             #line hidden
-            this.Write(";\r\n\t\t\telse\r\n\t\t\t\tUpdateAsync();\r\n");
+            this.Write(";\r\n\t\t\telse\r\n\t\t\t\tawait UpdateAsync();\r\n");
             
             #line 310 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 

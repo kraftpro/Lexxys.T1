@@ -20,7 +20,7 @@ namespace Lexxys.T1.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+    #line 1 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class DataTemplate : DataTemplateBase
     {
@@ -32,22 +32,22 @@ namespace Lexxys.T1.Templates
         {
             this.Write("/*\r\n\tServer: ");
             
-            #line 8 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 8 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Lexxys.Config.GetValue<Lexxys.ConnectionStringInfo>("database.connection").Server));
             
             #line default
             #line hidden
             this.Write("\r\n\tVersion ");
             
-            #line 9 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 9 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(System.Reflection.Assembly.GetEntryAssembly().GetName().Version));
             
             #line default
             #line hidden
             this.Write(" at ");
             
-            #line 9 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")));
+            #line 9 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.UtcNow.ToString("u")));
             
             #line default
             #line hidden
@@ -55,7 +55,7 @@ namespace Lexxys.T1.Templates
                     " System.Data.SqlClient;\r\nusing System.Diagnostics;\r\nusing System.IO;\r\nusing Syst" +
                     "em.Linq;\r\nusing System.Text;\r\nusing System.Threading.Tasks;\r\n\r\nusing Lexxys;\r\n");
             
-            #line 22 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 22 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 if (Project == null)
 	throw new ArgumentNullException(nameof(Project));
@@ -75,14 +75,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("using ");
             
-            #line 36 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 36 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(v));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 37 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 37 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 }
 
@@ -91,14 +91,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\nnamespace ");
             
-            #line 41 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 41 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Project.Namespace ?? "Entities"));
             
             #line default
             #line hidden
             this.Write(".Data\r\n{\r\n");
             
-            #line 43 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 43 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 	foreach (TableInfo table in Tables.Values)
 	{
@@ -113,21 +113,21 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t[Serializable]\r\n\tpartial class ");
             
-            #line 54 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 54 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(": IDump");
             
-            #line 54 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 54 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Project.Implements == null ? "": ", " + Project.Implements));
             
             #line default
             #line hidden
             this.Write("\r\n\t{\r\n\t\t#region Fields\r\n");
             
-            #line 57 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 57 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		foreach (var field in view.Fields.Union(cls.ExtraFields))
 		{
@@ -142,28 +142,28 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\tpublic ");
             
-            #line 66 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 66 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.CsFieldType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 66 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 66 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(" { get; set; }");
             
-            #line 66 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 66 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(comment ?? ""));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 67 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 67 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		}
 
@@ -172,35 +172,35 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\tprivate ");
             
-            #line 71 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 71 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(" _originalCopy;\r\n\t\tprivate static readonly ");
             
-            #line 72 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 72 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(" _emptyRecord = new ");
             
-            #line 72 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 72 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write("();\r\n\t\t#endregion\r\n\r\n\t\tpublic ");
             
-            #line 75 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 75 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write("()\r\n\t\t{\r\n");
             
-            #line 77 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 77 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		List<(ColumnInfo Field, string Expression)> initializators = table.Fields.Where(o => o.InitializationExpression != null).Select(o => (o, o.InitializationExpression)).ToList();
 		for (int i = 0; i < initializators.Count; ++i)
@@ -211,21 +211,21 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t");
             
-            #line 81 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 81 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(initializators[i].Field.FieldName));
             
             #line default
             #line hidden
             this.Write(" = ");
             
-            #line 81 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 81 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(initializators[i].Expression));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 82 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 82 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 		}
 
             
@@ -233,7 +233,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t}\r\n\r\n\t\tpublic bool IsRecordNew => _originalCopy == null;\r\n\r\n");
             
-            #line 87 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 87 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		List<ColumnInfo> freeFields = table.Fields.Where(o => !o.ControlledByDatasource).ToList();
 		if (freeFields.All(o => o.IsDeterministic))
@@ -244,14 +244,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\tpublic bool IsRecordModified\r\n\t\t{\r\n\t\t\tget\r\n\t\t\t{\r\n\t\t\t\t");
             
-            #line 96 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 96 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(" copy = _originalCopy ?? _emptyRecord;\r\n\t\t\t\treturn\r\n");
             
-            #line 98 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 98 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			for (int i = 0; i < freeFields.Count; ++i)
 			{
@@ -262,27 +262,27 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t\tcopy.");
             
-            #line 103 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 103 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(" != ");
             
-            #line 103 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 103 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             
-            #line 103 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 103 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i < freeFields.Count - 1 ? " ||": ";"));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 104 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 104 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 
@@ -291,7 +291,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t}\r\n\t\t}\r\n");
             
-            #line 109 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 109 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		}
 		else
@@ -307,7 +307,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\tpublic bool IsRecordModified => _originalCopy == null;\r\n");
             
-            #line 120 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 120 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 				else
@@ -318,14 +318,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\tpublic bool IsRecordModified => _originalCopy == null || ");
             
-            #line 125 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 125 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(String.Join(" || ", freeFields.Select(o => String.Format("_originalCopy.{0} != {0}", o.FieldName)))));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 126 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 126 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 			}
@@ -337,7 +337,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\tpublic bool IsRecordModified => _originalCopy == null ?\r\n");
             
-            #line 133 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 133 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				for (int i = 0; i < insertingFields.Count; ++i)
 				{
@@ -348,27 +348,27 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t");
             
-            #line 138 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 138 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(" != ");
             
-            #line 138 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 138 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.InitializationExpression ?? "default"));
             
             #line default
             #line hidden
             
-            #line 138 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 138 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i < insertingFields.Count - 1 ? " ||": ":"));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 139 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 139 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 
@@ -376,7 +376,7 @@ foreach (var u in Project.Using)
             #line default
             #line hidden
             
-            #line 142 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 142 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				for (int i = 0; i < freeFields.Count; ++i)
 				{
@@ -387,27 +387,27 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t_originalCopy.");
             
-            #line 147 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 147 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(" != ");
             
-            #line 147 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 147 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             
-            #line 147 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 147 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i < freeFields.Count - 1 ? " ||": ";"));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 148 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 148 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 			}
@@ -418,7 +418,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\tpublic bool IsFieldModified(Func<");
             
-            #line 154 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 154 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
@@ -426,14 +426,14 @@ foreach (var u in Project.Using)
             this.Write(", object> accessor)\r\n\t\t{\r\n\t\t\treturn !object.Equals(accessor(this), accessor(_orig" +
                     "inalCopy ?? _emptyRecord));\r\n\t\t}\r\n\r\n\t\tpublic T GetOriginalValue<T>(Func<");
             
-            #line 159 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 159 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(", T> accessor)\r\n\t\t{\r\n\t\t\treturn accessor(_originalCopy ?? _emptyRecord);\r\n\t\t}\r\n");
             
-            #line 163 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 163 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		var asncTable = new (bool IsAsync, string AsAsync, string Async, string Await, Func<string, string> Type)[]
 		{
@@ -467,81 +467,81 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\tpublic static ");
             
-            #line 192 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 192 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.AsAsync));
             
             #line default
             #line hidden
             
-            #line 192 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 192 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Type(recordName)));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 192 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 192 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             
-            #line 192 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 192 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 192 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 192 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(method.MakeDeclaration()));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\ttry\r\n\t\t\t{\r\n\t\t\t\t");
             
-            #line 196 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 196 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(" record = null;\r\n\t\t\t\t");
             
-            #line 197 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 197 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Await));
             
             #line default
             #line hidden
             
-            #line 197 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 197 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dc));
             
             #line default
             #line hidden
             this.Write(".Map");
             
-            #line 197 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 197 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(1, o => (record = new ");
             
-            #line 197 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 197 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write("()).LoadRecord(o, 0),\r\n\t\t\t\t\t");
             
-            #line 198 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 198 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(chooseExpression == null ? Strings.EscapeCsString(queryClause): $"{tableName}[{chooseExpression}]"));
             
             #line default
             #line hidden
             this.Write(",\r\n");
             
-            #line 199 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 199 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				for (int i = 0; i < keys.Count; ++i)
 				{
@@ -552,41 +552,41 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t\tnew SqlParameter(\"@");
             
-            #line 203 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 203 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.GetSqlParameterName()));
             
             #line default
             #line hidden
             this.Write("\", SqlDbType.");
             
-            #line 203 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 203 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(keys[i].SqlDbType));
             
             #line default
             #line hidden
             this.Write(") { Value = ");
             
-            #line 203 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 203 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.GetLocalName()));
             
             #line default
             #line hidden
             
-            #line 203 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 203 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.IsNullable ? " ?? (object)DBNull.Value": ""));
             
             #line default
             #line hidden
             this.Write(" }");
             
-            #line 203 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 203 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i == keys.Count - 1 ? ");": ","));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 204 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 204 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 
@@ -596,14 +596,14 @@ foreach (var u in Project.Using)
             this.Write("\t\t\t\treturn record;\r\n\t\t\t}\r\n\t\t\tcatch (Exception flaw)\r\n\t\t\t{\r\n\t\t\t\tflaw.Add(\"table\", " +
                     "\"");
             
-            #line 211 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 211 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(table.FullName));
             
             #line default
             #line hidden
             this.Write("\")\r\n");
             
-            #line 212 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 212 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				for (int i = 0; i < keys.Count; ++i)
 				{
@@ -614,28 +614,28 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t\t.Add(\"");
             
-            #line 216 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 216 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.GetLocalName()));
             
             #line default
             #line hidden
             this.Write("\", ");
             
-            #line 216 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 216 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.GetLocalName()));
             
             #line default
             #line hidden
             this.Write(")");
             
-            #line 216 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 216 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i == keys.Count - 1 ? ";": ""));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 217 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 217 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 
@@ -644,7 +644,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tthrow;\r\n\t\t\t}\r\n\t\t}\r\n");
             
-            #line 223 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 223 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 			if (whereVars.Length > 0)
@@ -655,14 +655,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\tprivate static readonly string[] ");
             
-            #line 228 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 228 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(tableName));
             
             #line default
             #line hidden
             this.Write(" = new[]\r\n\t\t\t{\r\n");
             
-            #line 230 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 230 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				for (int i = 0; i < whereVars.Length; ++i)
 				{
@@ -672,14 +672,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t");
             
-            #line 234 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 234 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Strings.EscapeCsString(queryClause + whereVars[i] + method.MakeOrder())));
             
             #line default
             #line hidden
             this.Write(",\r\n");
             
-            #line 235 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 235 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 
@@ -688,7 +688,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t};\r\n");
             
-            #line 239 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 239 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 		}
@@ -707,116 +707,116 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\tpublic static ");
             
-            #line 253 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 253 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.AsAsync));
             
             #line default
             #line hidden
             
-            #line 253 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 253 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Type(recordName)));
             
             #line default
             #line hidden
             this.Write(" LoadBy");
             
-            #line 253 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 253 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             
-            #line 253 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 253 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 253 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 253 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.CsType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 253 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 253 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(idName));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\ttry\r\n\t\t\t{\r\n\t\t\t\t");
             
-            #line 257 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 257 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(" record = null;\r\n\t\t\t\t");
             
-            #line 258 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 258 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Await));
             
             #line default
             #line hidden
             
-            #line 258 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 258 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dc));
             
             #line default
             #line hidden
             this.Write(".Map");
             
-            #line 258 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 258 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(1, o => (record = new ");
             
-            #line 258 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 258 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write("()).LoadRecord(o, 0),\r\n\t\t\t\t\t\"");
             
-            #line 259 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 259 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cls.Query ?? view.GetSelectClause()));
             
             #line default
             #line hidden
             this.Write(" where [");
             
-            #line 259 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 259 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.Bind));
             
             #line default
             #line hidden
             this.Write("]=@");
             
-            #line 259 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 259 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("\",\r\n\t\t\t\t\tnew SqlParameter(\"@");
             
-            #line 260 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 260 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("\", SqlDbType.");
             
-            #line 260 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 260 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.SqlDbType));
             
             #line default
             #line hidden
             this.Write(") { Value = ");
             
-            #line 260 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 260 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(idName));
             
             #line default
@@ -824,28 +824,28 @@ foreach (var u in Project.Using)
             this.Write(" });\r\n\t\t\t\treturn record;\r\n\t\t\t}\r\n\t\t\tcatch (Exception flaw)\r\n\t\t\t{\r\n\t\t\t\tflaw.Add(\"ta" +
                     "ble\", \"");
             
-            #line 265 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 265 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(table.FullName));
             
             #line default
             #line hidden
             this.Write("\")\r\n\t\t\t\t\t.Add(\"");
             
-            #line 266 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 266 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("\", ");
             
-            #line 266 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 266 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(idName));
             
             #line default
             #line hidden
             this.Write(");\r\n\t\t\t\tthrow;\r\n\t\t\t}\r\n\t\t}\r\n");
             
-            #line 270 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 270 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 		}
@@ -861,20 +861,20 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\tpublic static ");
             
-            #line 281 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 281 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.AsAsync));
             
             #line default
             #line hidden
             
-            #line 281 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 281 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Type($"List<{recordName}>")));
             
             #line default
             #line hidden
             this.Write(" Collect");
             
-            #line 281 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 281 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
@@ -882,7 +882,7 @@ foreach (var u in Project.Using)
             this.Write("(IEnumerable<int> ids, bool ordered = false)\r\n\t\t{\r\n\t\t\tif (ids == null)\r\n\t\t\t\tretur" +
                     "n new List<");
             
-            #line 284 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 284 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
@@ -890,48 +890,48 @@ foreach (var u in Project.Using)
             this.Write(">();\r\n\t\t\tif (ordered && !(ids is ICollection<int> || ids is IReadOnlyCollection<i" +
                     "nt>))\r\n\t\t\t\tids = ids.ToList();\r\n\t\t\ttry\r\n\t\t\t{\r\n\t\t\t\tvar result = new List<");
             
-            #line 289 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 289 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(">();\r\n\t\t\t\t");
             
-            #line 290 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 290 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Await));
             
             #line default
             #line hidden
             
-            #line 290 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 290 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dc));
             
             #line default
             #line hidden
             this.Write(".Map");
             
-            #line 290 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 290 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(o =>\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tvar record = new ");
             
-            #line 292 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 292 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write("();\r\n\t\t\t\t\t\tif (record.LoadRecord(o, 0))\r\n\t\t\t\t\t\t\tresult.Add(record);\r\n\t\t\t\t\t}, \"");
             
-            #line 295 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 295 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cls.Query ?? view.GetSelectClause()));
             
             #line default
             #line hidden
             this.Write(" where [");
             
-            #line 295 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 295 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cls.Key ?? keyColumn.Bind));
             
             #line default
@@ -939,7 +939,7 @@ foreach (var u in Project.Using)
             this.Write("] in \" + Dc.IdFilter(ids));\r\n\t\t\t\tif (!ordered || result.Count < 2)\r\n\t\t\t\t\treturn r" +
                     "esult;\r\n\t\t\t\tvar sorted = new List<");
             
-            #line 298 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 298 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
@@ -947,7 +947,7 @@ foreach (var u in Project.Using)
             this.Write(">(result.Count);\r\n\t\t\t\tforeach (var id in ids)\r\n\t\t\t\t{\r\n\t\t\t\t\tint k = result.FindInd" +
                     "ex(o => o.");
             
-            #line 301 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 301 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(keyColumn.FieldName));
             
             #line default
@@ -955,14 +955,14 @@ foreach (var u in Project.Using)
             this.Write(" == id);\r\n\t\t\t\t\tif (k >= 0)\r\n\t\t\t\t\t\tsorted.Add(result[k]);\r\n\t\t\t\t}\r\n\t\t\t\treturn sorte" +
                     "d;\r\n\t\t\t}\r\n\t\t\tcatch (Exception flaw)\r\n\t\t\t{\r\n\t\t\t\tflaw.Add(\"table\", \"");
             
-            #line 309 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 309 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(table.FullName));
             
             #line default
             #line hidden
             this.Write("\")\r\n\t\t\t\t\t.Add(\"ids\", Dc.IdFilter(ids));\r\n\t\t\t\tthrow;\r\n\t\t\t}\r\n\t\t}\r\n");
             
-            #line 314 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 314 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 		}
@@ -986,26 +986,26 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\tpublic static ");
             
-            #line 333 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 333 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.AsAsync));
             
             #line default
             #line hidden
             
-            #line 333 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 333 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Type($"List<{recordName}>")));
             
             #line default
             #line hidden
             this.Write(" CollectBy");
             
-            #line 333 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 333 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             
-            #line 333 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 333 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
@@ -1013,7 +1013,7 @@ foreach (var u in Project.Using)
             this.Write("(IEnumerable<int> ids, bool ordered = false)\r\n\t\t{\r\n\t\t\tif (ids == null)\r\n\t\t\t\tretur" +
                     "n new List<");
             
-            #line 336 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 336 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
@@ -1021,48 +1021,48 @@ foreach (var u in Project.Using)
             this.Write(">();\r\n\t\t\tif (ordered && !(ids is ICollection<int> || ids is IReadOnlyCollection<i" +
                     "nt>))\r\n\t\t\t\tids = ids.ToList();\r\n\t\t\ttry\r\n\t\t\t{\r\n\t\t\t\tvar result = new List<");
             
-            #line 341 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 341 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(">();\r\n\t\t\t\t");
             
-            #line 342 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 342 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Await));
             
             #line default
             #line hidden
             
-            #line 342 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 342 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dc));
             
             #line default
             #line hidden
             this.Write(".Map");
             
-            #line 342 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 342 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(o =>\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tvar record = new ");
             
-            #line 344 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 344 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write("();\r\n\t\t\t\t\t\tif (record.LoadRecord(o, 0))\r\n\t\t\t\t\t\t\tresult.Add(record);\r\n\t\t\t\t\t}, \"");
             
-            #line 347 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 347 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cls.Query ?? view.GetSelectClause()));
             
             #line default
             #line hidden
             this.Write(" where [");
             
-            #line 347 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 347 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.Bind));
             
             #line default
@@ -1070,7 +1070,7 @@ foreach (var u in Project.Using)
             this.Write("] in \" + Dc.IdFilter(ids));\r\n\t\t\t\tif (!ordered || result.Count < 2)\r\n\t\t\t\t\treturn r" +
                     "esult;\r\n\t\t\t\tvar sorted = new List<");
             
-            #line 350 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 350 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
@@ -1078,7 +1078,7 @@ foreach (var u in Project.Using)
             this.Write(">(result.Count);\r\n\t\t\t\tforeach (var id in ids)\r\n\t\t\t\t{\r\n\t\t\t\t\tint k = result.FindInd" +
                     "ex(o => o.");
             
-            #line 353 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 353 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.FieldName));
             
             #line default
@@ -1086,14 +1086,14 @@ foreach (var u in Project.Using)
             this.Write(" == id);\r\n\t\t\t\t\tif (k >= 0)\r\n\t\t\t\t\t\tsorted.Add(result[k]);\r\n\t\t\t\t}\r\n\t\t\t\treturn sorte" +
                     "d;\r\n\t\t\t}\r\n\t\t\tcatch (Exception flaw)\r\n\t\t\t{\r\n\t\t\t\tflaw.Add(\"table\", \"");
             
-            #line 361 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 361 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(table.FullName));
             
             #line default
             #line hidden
             this.Write("\")\r\n\t\t\t\t\t.Add(\"ids\", Dc.IdFilter(ids));\r\n\t\t\t\tthrow;\r\n\t\t\t}\r\n\t\t}\r\n");
             
-            #line 366 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 366 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 		}
@@ -1122,81 +1122,81 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\tpublic static ");
             
-            #line 390 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 390 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.AsAsync));
             
             #line default
             #line hidden
             
-            #line 390 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 390 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Type($"List<{recordName}>")));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 390 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 390 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             
-            #line 390 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 390 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 390 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 390 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(method.MakeDeclaration()));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\ttry\r\n\t\t\t{\r\n\t\t\t\tvar result = new List<");
             
-            #line 394 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 394 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(">();\r\n\t\t\t\t");
             
-            #line 395 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 395 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Await));
             
             #line default
             #line hidden
             
-            #line 395 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 395 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dc));
             
             #line default
             #line hidden
             this.Write(".Map");
             
-            #line 395 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 395 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(o =>\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tvar record = new ");
             
-            #line 397 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 397 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write("();\r\n\t\t\t\t\t\tif (record.LoadRecord(o, 0))\r\n\t\t\t\t\t\t\tresult.Add(record);\r\n\t\t\t\t\t}, ");
             
-            #line 400 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 400 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(chooseExpression == null ? Strings.EscapeCsString(queryClause): $"{tableName}[{chooseExpression}]"));
             
             #line default
             #line hidden
             this.Write(",\r\n");
             
-            #line 401 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 401 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				for (int i = 0; i < keys.Count; ++i)
 				{
@@ -1207,41 +1207,41 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t\tnew SqlParameter(\"@");
             
-            #line 405 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 405 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.GetSqlParameterName()));
             
             #line default
             #line hidden
             this.Write("\", SqlDbType.");
             
-            #line 405 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 405 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.SqlDbType));
             
             #line default
             #line hidden
             this.Write(") { Value = ");
             
-            #line 405 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 405 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.GetLocalName()));
             
             #line default
             #line hidden
             
-            #line 405 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 405 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.IsNullable ? " ?? (object)DBNull.Value": ""));
             
             #line default
             #line hidden
             this.Write(" }");
             
-            #line 405 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 405 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i == keys.Count - 1 ? ");": ","));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 406 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 406 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 
@@ -1251,14 +1251,14 @@ foreach (var u in Project.Using)
             this.Write("\t\t\t\treturn result;\r\n\t\t\t}\r\n\t\t\tcatch (Exception flaw)\r\n\t\t\t{\r\n\t\t\t\tflaw.Add(\"table\", " +
                     "\"");
             
-            #line 412 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 412 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(table.FullName));
             
             #line default
             #line hidden
             this.Write("\")\r\n");
             
-            #line 413 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 413 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				for (int i = 0; i < keys.Count; ++i)
 				{
@@ -1269,28 +1269,28 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t\t.Add(\"");
             
-            #line 417 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 417 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.GetLocalName()));
             
             #line default
             #line hidden
             this.Write("\", ");
             
-            #line 417 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 417 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.GetLocalName()));
             
             #line default
             #line hidden
             this.Write(")");
             
-            #line 417 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 417 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i == keys.Count - 1 ? ";": ""));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 418 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 418 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 
@@ -1299,7 +1299,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tthrow;\r\n\t\t\t}\r\n\t\t}\r\n");
             
-            #line 424 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 424 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 			if (whereVars.Length > 0)
@@ -1310,14 +1310,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\tprivate static readonly string[] ");
             
-            #line 429 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 429 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(tableName));
             
             #line default
             #line hidden
             this.Write(" = new[]\r\n\t\t\t{\r\n");
             
-            #line 431 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 431 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				for (int i = 0; i < whereVars.Length; ++i)
 				{
@@ -1327,14 +1327,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t");
             
-            #line 435 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 435 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Strings.EscapeCsString(queryClause + whereVars[i] + method.MakeOrder())));
             
             #line default
             #line hidden
             this.Write(",\r\n");
             
-            #line 436 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 436 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 
@@ -1343,7 +1343,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t};\r\n");
             
-            #line 440 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 440 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 		}
@@ -1365,116 +1365,116 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\tpublic static ");
             
-            #line 457 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 457 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.AsAsync));
             
             #line default
             #line hidden
             
-            #line 457 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 457 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Type($"List<{recordName}>")));
             
             #line default
             #line hidden
             this.Write(" CollectBy");
             
-            #line 457 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 457 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             
-            #line 457 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 457 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 457 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 457 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.CsType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 457 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 457 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(local));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\ttry\r\n\t\t\t{\r\n\t\t\t\tvar result = new List<");
             
-            #line 461 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 461 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(">();\r\n\t\t\t\t");
             
-            #line 462 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 462 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Await));
             
             #line default
             #line hidden
             
-            #line 462 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 462 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dc));
             
             #line default
             #line hidden
             this.Write(".Map");
             
-            #line 462 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 462 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(o =>\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tvar record = new ");
             
-            #line 464 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 464 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write("();\r\n\t\t\t\t\t\tif (record.LoadRecord(o, 0))\r\n\t\t\t\t\t\t\tresult.Add(record);\r\n\t\t\t\t\t}, \"");
             
-            #line 467 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 467 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cls.Query ?? view.GetSelectClause()));
             
             #line default
             #line hidden
             this.Write(" where [");
             
-            #line 467 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 467 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.Bind));
             
             #line default
             #line hidden
             this.Write("]=@");
             
-            #line 467 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 467 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("\",\r\n\t\t\t\t\tnew SqlParameter(\"@");
             
-            #line 468 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 468 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("\", SqlDbType.");
             
-            #line 468 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 468 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.SqlDbType));
             
             #line default
             #line hidden
             this.Write(") { Value = ");
             
-            #line 468 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 468 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(local));
             
             #line default
@@ -1482,28 +1482,28 @@ foreach (var u in Project.Using)
             this.Write(" });\r\n\t\t\t\treturn result;\r\n\t\t\t}\r\n\t\t\tcatch (Exception flaw)\r\n\t\t\t{\r\n\t\t\t\tflaw.Add(\"ta" +
                     "ble\", \"");
             
-            #line 473 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 473 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(table.FullName));
             
             #line default
             #line hidden
             this.Write("\")\r\n\t\t\t\t\t.Add(\"");
             
-            #line 474 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 474 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(local));
             
             #line default
             #line hidden
             this.Write("\", ");
             
-            #line 474 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 474 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(local));
             
             #line default
             #line hidden
             this.Write(");\r\n\t\t\t\tthrow;\r\n\t\t\t}\r\n\t\t}\r\n");
             
-            #line 478 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 478 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 		}
@@ -1520,21 +1520,21 @@ foreach (var u in Project.Using)
 				throw EX.ArgumentOutOfRange(""position"", position);
 			if (position > record.FieldCount - ");
             
-            #line 489 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 489 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Fields.Count));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t\t\tthrow EX.ArgumentOutOfRange(\"position\", position, record.FieldCount - ");
             
-            #line 490 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 490 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Fields.Count));
             
             #line default
             #line hidden
             this.Write(");\r\n\t\t\ttry\r\n\t\t\t{\r\n");
             
-            #line 493 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 493 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				foreach (var key in table.KeyFields)
 				{
@@ -1544,14 +1544,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tif (record.IsDBNull(position");
             
-            #line 497 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 497 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.Order > 1 ? " + " + (key.Order - 1).ToString(): ""));
             
             #line default
             #line hidden
             this.Write("))\r\n\t\t\t\t\treturn false;\r\n");
             
-            #line 499 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 499 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 					
 				}
 
@@ -1559,7 +1559,7 @@ foreach (var u in Project.Using)
             #line default
             #line hidden
             
-            #line 502 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 502 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				string prefix = "";
 				foreach (var field in view.Fields)
@@ -1574,21 +1574,21 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t");
             
-            #line 511 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 511 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(" = record.IsDBNull(");
             
-            #line 511 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 511 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(prefix));
             
             #line default
             #line hidden
             this.Write("position) ? null: ((string)record[position]).TrimEnd();\r\n");
             
-            #line 512 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 512 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 						}
 						else
@@ -1599,21 +1599,21 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t");
             
-            #line 517 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 517 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(" = ((string)record[");
             
-            #line 517 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 517 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(prefix));
             
             #line default
             #line hidden
             this.Write("position]).TrimEnd();\r\n");
             
-            #line 518 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 518 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 						}
 						continue;
@@ -1631,35 +1631,35 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t");
             
-            #line 530 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 530 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(" = record.IsDBNull(");
             
-            #line 530 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 530 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(prefix));
             
             #line default
             #line hidden
             this.Write("position) ? (");
             
-            #line 530 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 530 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.CsFieldType));
             
             #line default
             #line hidden
             this.Write(")null: ");
             
-            #line 530 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 530 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cast));
             
             #line default
             #line hidden
             this.Write("record[position];\r\n");
             
-            #line 531 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 531 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 					}
 					else
@@ -1670,28 +1670,28 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t");
             
-            #line 536 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 536 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(" = ");
             
-            #line 536 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 536 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cast));
             
             #line default
             #line hidden
             this.Write("record[");
             
-            #line 536 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 536 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(prefix));
             
             #line default
             #line hidden
             this.Write("position];\r\n");
             
-            #line 537 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 537 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 					}
 					prefix = "++";
@@ -1704,7 +1704,7 @@ foreach (var u in Project.Using)
                     "(Exception flaw)\r\n\t\t\t{\r\n\t\t\t\tflaw.Add(\"position\", position);\r\n\t\t\t\tthrow;\r\n\t\t\t}\r\n\t" +
                     "\t}\r\n");
             
-            #line 551 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 551 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		List<KeyValuePair<string, ColumnInfo>> fields = new List<KeyValuePair<string, ColumnInfo>>();
 		var controlledFields = table.Fields.Where(o => o.ControlledByDatasource).ToList();
@@ -1718,14 +1718,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\tpublic ");
             
-            #line 560 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 560 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(virtualPrefix));
             
             #line default
             #line hidden
             this.Write(" InsertRecord");
             
-            #line 560 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 560 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
@@ -1746,7 +1746,7 @@ foreach (var u in Project.Using)
 				SqlParameterCollection pp = insert.Parameters;
 ");
             
-            #line 574 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 574 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			StringBuilder ins1 = new StringBuilder()
 				.Append("insert into ").Append(table.FullName).Append("(");
@@ -1767,46 +1767,46 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tpp.Add(new SqlParameter(\"@");
             
-            #line 589 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 589 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write("\", SqlDbType.");
             
-            #line 589 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 589 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.SqlDbType));
             
             #line default
             #line hidden
             this.Write(") { Value = ");
             
-            #line 589 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 589 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cast));
             
             #line default
             #line hidden
             
-            #line 589 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 589 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             
-            #line 589 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 589 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(nullable));
             
             #line default
             #line hidden
             
-            #line 589 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 589 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(extras));
             
             #line default
             #line hidden
             this.Write(" });\r\n");
             
-            #line 590 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 590 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 					ins1.Append("[").Append(field.Bind).Append("],");
 					ins2.Append("@").Append(field.FieldName).Append(",");
@@ -1831,21 +1831,21 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tSqlParameter p0 = new SqlParameter(\"@");
             
-            #line 609 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 609 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(id.FieldName));
             
             #line default
             #line hidden
             this.Write("\", SqlDbType.");
             
-            #line 609 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 609 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(id.SqlDbType));
             
             #line default
             #line hidden
             this.Write(") { Direction = ParameterDirection.Output };\r\n\t\t\t\tpp.Add(p0);\r\n");
             
-            #line 611 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 611 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 					if (controlledFields.Count == 1)
 					{
@@ -1867,35 +1867,35 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tSqlParameter ");
             
-            #line 627 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 627 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write(" = new SqlParameter(\"@");
             
-            #line 627 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 627 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write("\", SqlDbType.");
             
-            #line 627 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 627 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.SqlDbType));
             
             #line default
             #line hidden
             this.Write(") { Direction = ParameterDirection.Output };\r\n\t\t\t\tpp.Add(");
             
-            #line 628 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 628 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write(");\r\n");
             
-            #line 629 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 629 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 							ins1.Append(",@").Append(field.FieldName).Append("=[").Append(field.Bind).Append("]");
 							++i;
@@ -1922,42 +1922,42 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tSqlParameter ");
             
-            #line 650 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 650 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write(" = new SqlParameter(\"@");
             
-            #line 650 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 650 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write("\", SqlDbType.");
             
-            #line 650 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 650 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.SqlDbType));
             
             #line default
             #line hidden
             this.Write(") { Direction = ParameterDirection.Output");
             
-            #line 650 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 650 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(extras));
             
             #line default
             #line hidden
             this.Write(" };\r\n\t\t\t\tpp.Add(");
             
-            #line 651 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 651 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write(");\r\n");
             
-            #line 652 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 652 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 						ins1.Append("@").Append(field.FieldName).Append("=[").Append(field.Bind).Append("],");
 					}
@@ -1975,20 +1975,20 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tstring command = ");
             
-            #line 664 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 664 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Strings.EscapeCsString(clause[0])));
             
             #line default
             #line hidden
             
-            #line 664 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 664 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(clause.Length == 0 ? ";": " +"));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 665 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 665 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			for (int i = 1; i < clause.Length; ++i)
 			{
@@ -1999,20 +1999,20 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t\t");
             
-            #line 670 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 670 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Strings.EscapeCsString("\r\n" + clause[i])));
             
             #line default
             #line hidden
             
-            #line 670 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 670 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(last ? ";": " +"));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 671 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 671 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 			if (extraCondition)
@@ -2028,35 +2028,35 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t\t\"");
             
-            #line 681 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 681 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(pad));
             
             #line default
             #line hidden
             this.Write(" [");
             
-            #line 681 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 681 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.Bind));
             
             #line default
             #line hidden
             this.Write("]\" + Dc.Equal(");
             
-            #line 681 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 681 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(")");
             
-            #line 681 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 681 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(last ? ";": " +"));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 682 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 682 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 					pad = "and";
 				}
@@ -2067,27 +2067,27 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tinsert.CommandText = command;\r\n\t\t\t\t");
             
-            #line 688 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 688 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Await));
             
             #line default
             #line hidden
             
-            #line 688 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 688 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dc));
             
             #line default
             #line hidden
             this.Write(".Execute");
             
-            #line 688 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 688 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(insert);\r\n\r\n");
             
-            #line 690 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 690 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			foreach (var pair in fields)
 			{
@@ -2100,27 +2100,27 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t");
             
-            #line 697 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 697 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(pair.Value.FieldName));
             
             #line default
             #line hidden
             this.Write(" = ");
             
-            #line 697 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 697 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cast));
             
             #line default
             #line hidden
             
-            #line 697 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 697 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(pair.Key));
             
             #line default
             #line hidden
             this.Write(".Value;\r\n");
             
-            #line 698 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 698 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 
@@ -2130,14 +2130,14 @@ foreach (var u in Project.Using)
             this.Write("\t\t\t\t_originalCopy = CopyRecord(_originalCopy);\r\n\t\t\t\treturn true;\r\n\t\t\t}\r\n\t\t\tcatch " +
                     "(Exception flaw)\r\n\t\t\t{\r\n\t\t\t\tflaw.Add(\"table\", \"");
             
-            #line 706 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 706 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(table.FullName));
             
             #line default
             #line hidden
             this.Write("\")\r\n\t\t\t\t\t.Add(\"Dump\", this.Dump());\r\n\t\t\t\tthrow;\r\n\t\t\t}\r\n\t\t}\r\n");
             
-            #line 711 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 711 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		}
 
@@ -2152,14 +2152,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\tpublic ");
             
-            #line 721 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 721 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(virtualPrefix));
             
             #line default
             #line hidden
             this.Write(" UpdateRecord");
             
-            #line 721 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 721 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
@@ -2179,14 +2179,14 @@ foreach (var u in Project.Using)
 				var update = new SqlCommand();
 				var text = new StringBuilder(""update ");
             
-            #line 734 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 734 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(table.FullName));
             
             #line default
             #line hidden
             this.Write(" set \");\r\n\r\n\t\t\t\tvar pp = update.Parameters;\r\n");
             
-            #line 737 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 737 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				foreach (var field in table.Fields.Where(o => !o.ControlledByDatasource))
 				{
@@ -2202,74 +2202,74 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tif (");
             
-            #line 747 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 747 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(" != _originalCopy.");
             
-            #line 747 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 747 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t\t\t{\r\n\t\t\t\t\tpp.Add(new SqlParameter(\"@");
             
-            #line 749 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 749 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write("\", SqlDbType.");
             
-            #line 749 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 749 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.SqlDbType));
             
             #line default
             #line hidden
             this.Write(") { Value = ");
             
-            #line 749 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 749 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cast));
             
             #line default
             #line hidden
             
-            #line 749 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 749 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             
-            #line 749 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 749 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(nullable));
             
             #line default
             #line hidden
             
-            #line 749 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 749 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(extras));
             
             #line default
             #line hidden
             this.Write(" });\r\n\t\t\t\t\ttext.Append(\"[");
             
-            #line 750 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 750 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.Bind));
             
             #line default
             #line hidden
             this.Write("]=@");
             
-            #line 750 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 750 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(",\");\r\n\t\t\t\t}\r\n");
             
-            #line 752 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 752 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				} // for by table.Fields
 
@@ -2294,61 +2294,61 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tvar ");
             
-            #line 771 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 771 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write(" = new SqlParameter(\"@");
             
-            #line 771 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 771 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("\", SqlDbType.");
             
-            #line 771 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 771 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.SqlDbType));
             
             #line default
             #line hidden
             this.Write(") { Value = ");
             
-            #line 771 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 771 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cast));
             
             #line default
             #line hidden
             this.Write("_originalCopy.");
             
-            #line 771 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 771 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             
-            #line 771 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 771 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(nullable));
             
             #line default
             #line hidden
             
-            #line 771 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 771 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(extras));
             
             #line default
             #line hidden
             this.Write(" };\r\n\t\t\t\tpp.Add(");
             
-            #line 772 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 772 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write(");\r\n");
             
-            #line 773 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 773 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 					fields.Add(new KeyValuePair<string, ColumnInfo>(string.Format("p{0}", i), field));
 					string paramName = "@" + name;
@@ -2371,7 +2371,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tvar pX = new SqlParameter(\"@");
             
-            #line 790 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 790 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(timestamp.FieldName));
             
             #line default
@@ -2379,42 +2379,42 @@ foreach (var u in Project.Using)
             this.Write("\", SqlDbType.Timestamp) { Direction = ParameterDirection.Output };\r\n\t\t\t\tpp.Add(pX" +
                     ");\r\n\r\n\t\t\t\t--text.Length;\r\n\t\t\t\ttext.Append(\"\\r\\nwhere ");
             
-            #line 794 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 794 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(condition));
             
             #line default
             #line hidden
             this.Write(";\")\r\n\t\t\t\t\t.Append(\"\\r\\nselect @");
             
-            #line 795 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 795 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(timestamp.FieldName));
             
             #line default
             #line hidden
             this.Write("=[");
             
-            #line 795 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 795 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(timestamp.Bind));
             
             #line default
             #line hidden
             this.Write("] from ");
             
-            #line 795 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 795 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(table.FullName));
             
             #line default
             #line hidden
             this.Write(" where ");
             
-            #line 795 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 795 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(condition));
             
             #line default
             #line hidden
             this.Write("\");\r\n");
             
-            #line 796 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 796 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 				else
@@ -2425,14 +2425,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\t\t\t--text.Length;\r\n\t\t\t\ttext.Append(\"\\r\\nwhere ");
             
-            #line 803 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 803 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(condition));
             
             #line default
             #line hidden
             this.Write(";\");\r\n");
             
-            #line 804 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 804 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 
@@ -2441,27 +2441,27 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tupdate.CommandText = text.ToString();\r\n\t\t\t\t");
             
-            #line 808 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 808 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Await));
             
             #line default
             #line hidden
             
-            #line 808 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 808 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dc));
             
             #line default
             #line hidden
             this.Write(".Execute");
             
-            #line 808 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 808 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(update);\r\n");
             
-            #line 809 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 809 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				if (timestamp != null)
 				{
@@ -2471,14 +2471,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t");
             
-            #line 813 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 813 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(timestamp.FieldName));
             
             #line default
             #line hidden
             this.Write(" = (RowVersion)(byte[])pX.Value;\r\n");
             
-            #line 814 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 814 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 
@@ -2488,14 +2488,14 @@ foreach (var u in Project.Using)
             this.Write("\t\t\t\t_originalCopy = CopyRecord(_originalCopy);\r\n\t\t\t\treturn true;\r\n\t\t\t}\r\n\t\t\tcatch " +
                     "(Exception flaw)\r\n\t\t\t{\r\n\t\t\t\tflaw.Add(\"table\", \"");
             
-            #line 822 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 822 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(table.FullName));
             
             #line default
             #line hidden
             this.Write("\")\r\n\t\t\t\t\t.Add(\"Dump\", this.Dump());\r\n\t\t\t\tthrow;\r\n\t\t\t}\r\n\t\t}\r\n");
             
-            #line 827 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 827 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			} // end for asyncTable
 
@@ -2506,7 +2506,7 @@ foreach (var u in Project.Using)
                     "eRecord();\r\n\t\t}\r\n\r\n\t\tpublic Task<bool> SaveChangesAsync()\r\n\t\t{\r\n\t\t\treturn IsReco" +
                     "rdNew ? InsertRecordAsync(): UpdateRecordAsync();\r\n\t\t}\r\n");
             
-            #line 840 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 840 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		} // if (table.KeyFields.Count > 0)
 
@@ -2525,75 +2525,75 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\tpublic static ");
             
-            #line 854 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 854 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.AsAsync));
             
             #line default
             #line hidden
             
-            #line 854 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 854 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Type("bool")));
             
             #line default
             #line hidden
             this.Write(" Delete");
             
-            #line 854 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 854 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 854 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 854 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\treturn ");
             
-            #line 856 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 856 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Await));
             
             #line default
             #line hidden
             
-            #line 856 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 856 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dc));
             
             #line default
             #line hidden
             this.Write(".Execute");
             
-            #line 856 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 856 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Async));
             
             #line default
             #line hidden
             this.Write("(\"delete from ");
             
-            #line 856 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 856 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(table.FullName));
             
             #line default
             #line hidden
             this.Write(" where ");
             
-            #line 856 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 856 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(" and ", keys.Select(o=> "[" + o.Bind + "]=@" + Tool.NormalizeName(o.Name, NameStyle.PublicName)))));
             
             #line default
             #line hidden
             this.Write("\", ");
             
-            #line 856 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 856 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> "new SqlParameter(\"@" + Tool.NormalizeName(o.Name, NameStyle.PublicName) + "\", SqlDbType." + o.SqlDbType + ") { Value = " + Tool.NormalizeName(o.Name, NameStyle.LocalName) + " }"))));
             
             #line default
             #line hidden
             this.Write(") > 0;\r\n\t\t}\r\n");
             
-            #line 858 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 858 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 			}
@@ -2603,7 +2603,7 @@ foreach (var u in Project.Using)
             #line default
             #line hidden
             
-            #line 863 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 863 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		List<(ColumnInfo Field, string Expression)> validators = table.Fields
 			.Where(f => !f.IsIdentity)
@@ -2619,7 +2619,7 @@ foreach (var u in Project.Using)
             this.Write("\r\n\t\tpublic ValidationResults Validate()\r\n\t\t{\r\n\t\t\treturn ValidationResults.Empty;\r" +
                     "\n\t\t}\r\n");
             
-            #line 877 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 877 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		}
 		else if (validators.Count == 1)
@@ -2630,28 +2630,28 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\tpublic ValidationResults Validate()\r\n\t\t{\r\n\t\t\treturn IsRecordNew || ");
             
-            #line 885 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 885 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(validators[0].Field.FieldName));
             
             #line default
             #line hidden
             this.Write(" != _originalCopy.");
             
-            #line 885 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 885 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(validators[0].Field.FieldName));
             
             #line default
             #line hidden
             this.Write(" ? ");
             
-            #line 885 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 885 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(validators[0].Expression));
             
             #line default
             #line hidden
             this.Write(": ValidationResults.Empty;\r\n\t\t}\r\n");
             
-            #line 887 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 887 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		}
 		else
@@ -2662,7 +2662,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\r\n\t\tpublic ValidationResults Validate()\r\n\t\t{\r\n");
             
-            #line 895 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 895 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			if (validators.Count == 0)
 			{
@@ -2672,7 +2672,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\treturn _originalCopy == null ? ValidationResults.Empty:\r\n");
             
-            #line 899 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 899 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 			else
@@ -2683,7 +2683,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\treturn _originalCopy == null ?\r\n\t\t\t\tValidationResults.Create(\r\n");
             
-            #line 905 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 905 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				for (int i = 0; i < validators.Count; ++i)
 				{
@@ -2693,20 +2693,20 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t\t");
             
-            #line 908 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 908 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(validators[i].Expression));
             
             #line default
             #line hidden
             
-            #line 908 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 908 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i == validators.Count - 1 ? "):": ","));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 909 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 909 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 
@@ -2715,7 +2715,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\tValidationResults.Create(\r\n");
             
-            #line 912 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 912 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				for (int i = 0; i < validators.Count; ++i)
 				{
@@ -2725,34 +2725,34 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\t\t");
             
-            #line 915 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 915 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(validators[i].Field.FieldName));
             
             #line default
             #line hidden
             this.Write(" == _originalCopy.");
             
-            #line 915 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 915 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(validators[i].Field.FieldName));
             
             #line default
             #line hidden
             this.Write(" ? null: ");
             
-            #line 915 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 915 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(validators[i].Expression));
             
             #line default
             #line hidden
             
-            #line 915 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 915 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i == validators.Count - 1 ? ");": ","));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 916 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 916 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 				}
 
@@ -2761,7 +2761,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t}\r\n");
             
-            #line 920 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 920 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 		}
@@ -2772,14 +2772,14 @@ foreach (var u in Project.Using)
             this.Write("\r\n\t\tpublic DumpWriter DumpContent(DumpWriter writer)\r\n\t\t{\r\n\t\t\tif (writer == null)" +
                     "\r\n\t\t\t\treturn null;\r\n\t\t\ttry\r\n\t\t\t{\r\n\t\t\t\t");
             
-            #line 931 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 931 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(" copy = _originalCopy ?? this;\r\n");
             
-            #line 932 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 932 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		string comma = "";
 		foreach (var field in view.Fields)
@@ -2790,35 +2790,35 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t\twriter.Text(\"");
             
-            #line 936 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 936 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(comma + field.FieldName));
             
             #line default
             #line hidden
             this.Write("=\").Dump(");
             
-            #line 936 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 936 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write("); if (");
             
-            #line 936 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 936 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(" != copy.");
             
-            #line 936 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 936 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(") writer.Text(\"(+)\");\r\n");
             
-            #line 937 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 937 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			comma = ",";
 		}
@@ -2828,14 +2828,14 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\t}\r\n\t\t\tcatch\r\n\t\t\t{\r\n\t\t\t}\r\n\t\t\treturn writer;\r\n\t\t}\r\n\r\n\t\tpublic ");
             
-            #line 948 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 948 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(" MakeACopy(");
             
-            #line 948 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 948 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
@@ -2843,14 +2843,14 @@ foreach (var u in Project.Using)
             this.Write(" that = null)\r\n\t\t{\r\n\t\t\tif (that == null || that == _emptyRecord)\r\n\t\t\t\tthat = new " +
                     "");
             
-            #line 951 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 951 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write("();\r\n\r\n");
             
-            #line 953 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 953 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		foreach (var field in view.Fields.Where(o => !o.ControlledByDatasource && o.IsDeterministic))
 		{
@@ -2860,21 +2860,21 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\tthat.");
             
-            #line 956 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 956 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(" = ");
             
-            #line 956 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 956 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 957 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 957 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		}
 
@@ -2883,21 +2883,21 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\treturn that;\r\n\t\t}\r\n\r\n\t\tprivate ");
             
-            #line 962 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 962 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(" CopyRecord(");
             
-            #line 962 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 962 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(" that)\r\n\t\t{\r\n");
             
-            #line 964 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 964 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		var computedFields = view.Fields.Where(o => o.ControlledByDatasource || !o.IsDeterministic).ToList();
 		if (computedFields.Count == 0)
@@ -2908,7 +2908,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\treturn MakeACopy(that);\r\n");
             
-            #line 969 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 969 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		}
 		else
@@ -2919,7 +2919,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\tthat = MakeACopy(that);\r\n");
             
-            #line 974 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 974 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			foreach (var field in computedFields)
 			{
@@ -2929,21 +2929,21 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\tthat.");
             
-            #line 977 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 977 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(" = this.");
             
-            #line 977 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 977 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 978 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 978 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 			}
 
@@ -2952,7 +2952,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t\treturn that;\r\n");
             
-            #line 981 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 981 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 		}
 
@@ -2961,7 +2961,7 @@ foreach (var u in Project.Using)
             #line hidden
             this.Write("\t\t}\r\n\t}\r\n");
             
-            #line 986 "C:\Projects\Dev\T1\Templates\DataTemplate.tt"
+            #line 986 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
 
 	}
 

@@ -91,11 +91,14 @@ namespace Lexxys.T1
 
 		public string GetExpression(ClassConfig cls, ColumnInfo col, Func<string, ColumnInfo, string> function)
 		{
-			if (col.IsExcluded || DoNotValidate)
+			if (col.IsExcluded)
 				return null;
 
 			var referenceName = ReferenceName(cls, col, Title);
 			string nullableCondition = col.IsNullable ? "true" : "false";
+
+			if (DoNotValidate)
+				return GetDefaultValidation(col, referenceName, nullableCondition);
 
 			if (IsEmpty || IsReference && Parameters == null || IsDefault)
 			{
@@ -112,7 +115,7 @@ namespace Lexxys.T1
 				return GetDefaultValidation(col, referenceName, nullableCondition);
 
 			if (IsRange)
-				return GetRangeValidation(col, referenceName, function);
+				return Format(GetRangeValidation(col, referenceName, function));
 
 			foreach (var item in Template.ClassesConfig.Validation)
 			{
@@ -122,28 +125,29 @@ namespace Lexxys.T1
 				if (vm.Success)
 					return Format(item.Replace, vm.Groups);
 			}
-			return null;
+			return GetDefaultValidation(col, referenceName, nullableCondition);
 
-			string Format(string value, GroupCollection group)
+			string Format(string value, GroupCollection group = null)
 			{
-				return __format.Replace(value, m => m.Groups[1].Value.Trim().ToUpperInvariant() switch
-				{
-					"TABLENAME" => cls.Table,
-					"FIELDNAME" => col.FieldName,
-					"BIND" => col.Bind,
-					"COLUMNNAME" => col.Bind,
-					"NAME" => referenceName,
-					"REFERENCENAME" => referenceName,
-					"NULLABLECONDITION" => nullableCondition,
-					"LENGTH" => col.Length.ToString(),
-					"KEY" => cls.Key ?? "Id",
-					"$0" => group[0].Value.Trim(),
-					"$1" => group[1].Value.Trim(),
-					"$2" => group[2].Value.Trim(),
-					"$3" => group[3].Value.Trim(),
-					"$4" => group[4].Value.Trim(),
-					_ => m.Value,
-				});
+				return Template.ProjectConfig.Expression.Format(
+					__format.Replace(value, m => m.Groups[1].Value.Trim().ToUpperInvariant() switch
+					{
+						"TABLENAME" => cls.Table,
+						"FIELDNAME" => col.FieldName,
+						"BIND" => col.Bind,
+						"COLUMNNAME" => col.Bind,
+						"NAME" => referenceName,
+						"REFERENCENAME" => referenceName,
+						"NULLABLECONDITION" => nullableCondition,
+						"LENGTH" => col.Length.ToString(),
+						"KEY" => cls.Key ?? "Id",
+						"$0" => group?[0].Value.Trim(),
+						"$1" => group?[1].Value.Trim(),
+						"$2" => group?[2].Value.Trim(),
+						"$3" => group?[3].Value.Trim(),
+						"$4" => group?[4].Value.Trim(),
+						_ => m.Value,
+					}));
 			}
 		}
 
