@@ -19,7 +19,7 @@
 		%project/entities/item			database schema kind
 		%project/entities/item/(*)/item
 
-		/**** CPBASE ****/
+		### SCHOOL ###
 		project School
 			entities
 				-	School	dbo	U
