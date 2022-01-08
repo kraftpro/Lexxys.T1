@@ -592,7 +592,7 @@ var objNamespace = Project.Namespace ?? "Entities";
             
             #line default
             #line hidden
-            this.Write(", dc) ?? throw EX.ArgumentOutOfRange(nameof(");
+            this.Write(", dc) ?? throw new ArgumentOutOfRangeException(nameof(");
             
             #line 215 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)));
@@ -606,7 +606,7 @@ var objNamespace = Project.Namespace ?? "Entities";
             
             #line default
             #line hidden
-            this.Write(");\r\n");
+            this.Write(", null);\r\n");
             
             #line 216 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
@@ -631,7 +631,7 @@ var objNamespace = Project.Namespace ?? "Entities";
             
             #line default
             #line hidden
-            this.Write(", dc) ?? throw EX.ArgumentOutOfRange($\"(");
+            this.Write(", dc) ?? throw new ArgumentOutOfRangeException($\"(");
             
             #line 221 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(",", keys.Select(o=> "{nameof(" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")}"))));
@@ -645,7 +645,7 @@ var objNamespace = Project.Namespace ?? "Entities";
             
             #line default
             #line hidden
-            this.Write("));\r\n");
+            this.Write("), null);\r\n");
             
             #line 222 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
@@ -712,21 +712,21 @@ var objNamespace = Project.Namespace ?? "Entities";
             
             #line default
             #line hidden
-            this.Write(", dc) ?? throw EX.ArgumentOutOfRange(\"");
+            this.Write(", dc) ?? throw new ArgumentOutOfRangeException(nameof(");
             
             #line 233 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)));
             
             #line default
             #line hidden
-            this.Write("\", ");
+            this.Write("), ");
             
             #line 233 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)));
             
             #line default
             #line hidden
-            this.Write(");\r\n");
+            this.Write(", null);\r\n");
             
             #line 234 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
@@ -751,14 +751,21 @@ var objNamespace = Project.Namespace ?? "Entities";
             
             #line default
             #line hidden
-            this.Write(", dc) ?? throw EX.ArgumentOutOfRange().");
+            this.Write(", dc) ?? throw new ArgumentOutOfRangeException($\"(");
             
             #line 239 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(".", keys.Select(o=> "Add(\"" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + "\", " + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")"))));
+            this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(",", keys.Select(o=> "{nameof(" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")}"))));
             
             #line default
             #line hidden
-            this.Write(";\r\n");
+            this.Write(")\", (");
+            
+            #line 239 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
+            
+            #line default
+            #line hidden
+            this.Write("), null);\r\n");
             
             #line 240 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 

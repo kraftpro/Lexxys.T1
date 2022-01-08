@@ -754,7 +754,7 @@ foreach (var u in Project.Using)
             #line hidden
             
             #line 263 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(a.Type(recordName)));
+            this.Write(this.ToStringHelper.ToStringWithCulture(a.Type(recordName + "?")));
             
             #line default
             #line hidden
@@ -799,7 +799,7 @@ foreach (var u in Project.Using)
             
             #line default
             #line hidden
-            this.Write(" record = null;\r\n\t\t\t\t");
+            this.Write("? record = null;\r\n\t\t\t\t");
             
             #line 268 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(a.Await));
@@ -2770,14 +2770,15 @@ foreach (var u in Project.Using)
             
             #line default
             #line hidden
-            this.Write("\r\n\t\tpublic ValidationResults Validate()\r\n\t\t{\r\n\t\t\treturn IsRecordNew || ");
+            this.Write("\r\n\t\tpublic ValidationResults Validate()\r\n\t\t{\r\n\t\t\treturn _originalCopy == null || " +
+                    "_originalCopy.");
             
             #line 896 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(validators[0].Field.FieldName));
             
             #line default
             #line hidden
-            this.Write(" != _originalCopy.");
+            this.Write(" != ");
             
             #line 896 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\DataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(validators[0].Field.FieldName));

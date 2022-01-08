@@ -212,13 +212,13 @@ namespace <#=objNamespace#>
 <#
 			if (keys.Count == 1) {
 #>
-			return Try<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc) ?? throw EX.ArgumentOutOfRange(nameof(<#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>), <#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>);
+			return Try<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc) ?? throw new ArgumentOutOfRangeException(nameof(<#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>), <#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>, null);
 <#
 			}
 			else
 			{
 #>
-			return Try<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc) ?? throw EX.ArgumentOutOfRange($"(<#=string.Join(",", keys.Select(o=> "{nameof(" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")}"))#>)", (<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>));
+			return Try<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc) ?? throw new ArgumentOutOfRangeException($"(<#=string.Join(",", keys.Select(o=> "{nameof(" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")}"))#>)", (<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>), null);
 <#
 			}
 #>
@@ -230,13 +230,13 @@ namespace <#=objNamespace#>
 <#
 			if (keys.Count == 1) {
 #>
-			return await Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc) ?? throw EX.ArgumentOutOfRange("<#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>", <#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>);
+			return await Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc) ?? throw new ArgumentOutOfRangeException(nameof(<#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>), <#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>, null);
 <#
 			}
 			else
 			{
 #>
-			return await Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc) ?? throw EX.ArgumentOutOfRange().<#=string.Join(".", keys.Select(o=> "Add(\"" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + "\", " + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")"))#>;
+			return await Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc) ?? throw new ArgumentOutOfRangeException($"(<#=string.Join(",", keys.Select(o=> "{nameof(" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")}"))#>)", (<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>), null);
 <#
 			}
 #>

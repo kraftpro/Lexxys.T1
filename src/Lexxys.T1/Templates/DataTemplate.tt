@@ -260,11 +260,11 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			{
 #>
 
-		public static <#=a.AsAsync#><#=a.Type(recordName)#> LoadBy<#=name#><#=a.Async#>(<#=key.CsType#> <#=idName#>, <#=dcDeclare#>)
+		public static <#=a.AsAsync#><#=a.Type(recordName + "?")#> LoadBy<#=name#><#=a.Async#>(<#=key.CsType#> <#=idName#>, <#=dcDeclare#>)
 		{
 			try
 			{
-				<#=recordName#> record = null;
+				<#=recordName#>? record = null;
 				<#=a.Await#>Lexxys.Data.DataContextExtensions.Map<#=a.Async#>(<#=dc#>, 1, o => (record = new <#=recordName#>()).LoadRecord(o, 0),
 					"<#=cls.Query ?? view.GetSelectClause()#> where [<#=key.Bind#>]=@<#=name#>",
 					new SqlParameter("@<#=name#>", SqlDbType.<#=key.SqlDbType#>) { Value = <#=idName#> });
@@ -893,7 +893,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 
 		public ValidationResults Validate()
 		{
-			return IsRecordNew || <#=validators[0].Field.FieldName#> != _originalCopy.<#=validators[0].Field.FieldName#> ? <#=validators[0].Expression#>: ValidationResults.Empty;
+			return _originalCopy == null || _originalCopy.<#=validators[0].Field.FieldName#> != <#=validators[0].Field.FieldName#> ? <#=validators[0].Expression#>: ValidationResults.Empty;
 		}
 <#
 		}
