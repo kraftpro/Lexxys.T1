@@ -62,7 +62,7 @@ namespace Lexxys.T1.Templates
             
             #line 18 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
-var dcDeclare = $"{Project.Expression.DataContextType} dc = null";
+var dcDeclare = $"{Project.Expression.DataContextType}? dc = null";
 
 foreach (var u in Project.Using)
 {
@@ -92,16 +92,16 @@ var objNamespace = Project.Namespace ?? "Entities";
             
             #line default
             #line hidden
-            this.Write("\r\nnamespace ");
+            this.Write("\r\n#nullable enable\r\n\r\nnamespace ");
             
-            #line 35 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 37 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(objNamespace));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n\tusing Data;\r\n\r\n");
             
-            #line 39 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 41 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	var cls = table.Class;
 	string className = table.PublicName;
@@ -114,49 +114,49 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\tpublic class ");
             
-            #line 46 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 48 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(": IDump\r\n\t{\r\n\t\t//private static readonly Logger Log => __log ??= new Logger(\"");
             
-            #line 48 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 50 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(objNamespace.Substring(objNamespace.LastIndexOf('.') + 1) + "." + className));
             
             #line default
             #line hidden
             this.Write("\");\r\n\t\t//private static Logger __log;\r\n\r\n\t\tprivate readonly ");
             
-            #line 51 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 53 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(" _record;\r\n\r\n\t\tpublic ");
             
-            #line 53 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 55 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("(): this(new ");
             
-            #line 53 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 55 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write("())\r\n\t\t{\r\n\t\t}\r\n\r\n\t\tprivate ");
             
-            #line 57 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 59 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 57 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 59 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
@@ -164,7 +164,7 @@ var objNamespace = Project.Namespace ?? "Entities";
             this.Write(" record)\r\n\t\t{\r\n\t\t\t_record = record ?? throw new ArgumentNullException(nameof(reco" +
                     "rd));\r\n\t\t}\r\n\r\n\t\t#region Auto Properties\r\n\r\n");
             
-            #line 64 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 66 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	foreach (var field in view.Fields)
 	{
@@ -180,43 +180,43 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\tpublic ");
             
-            #line 73 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 75 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.CsFieldType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 73 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 75 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(fieldName));
             
             #line default
             #line hidden
             this.Write(" { get => _record.");
             
-            #line 73 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 75 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write("; set => _record.");
             
-            #line 73 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 75 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(" = ");
             
-            #line 73 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(field.CsType == "string" ? "value.TrimToNull()":
-				field.CsType == "byte[]" ? "value == null || value.Length == 0 ? null: value": "value"));
+            #line 75 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(field.CsType == "string" ? (field.IsNullable ? "value.TrimToNull()": "value.Trim()"):
+				field.CsType == "byte[]" && field.IsNullable ? "value == null || value.Length == 0 ? null: value": "value"));
             
             #line default
             #line hidden
             this.Write("; }\r\n\r\n");
             
-            #line 78 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 80 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 		}
 		else
@@ -227,28 +227,28 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\tpublic ");
             
-            #line 82 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 84 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.CsFieldType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 82 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 84 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(fieldName));
             
             #line default
             #line hidden
             this.Write(" => _record.");
             
-            #line 82 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 84 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field.FieldName));
             
             #line default
             #line hidden
             this.Write(";\r\n\r\n");
             
-            #line 84 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 86 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 		}
 	}
@@ -259,36 +259,36 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\tpublic bool ");
             
-            #line 89 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 91 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(isPrefix));
             
             #line default
             #line hidden
             this.Write("Modified => _record.IsRecordModified;\r\n\r\n\t\tpublic bool ");
             
-            #line 91 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 93 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(isPrefix));
             
             #line default
             #line hidden
             this.Write("New => _record.IsRecordNew;\r\n\r\n\t\t#endregion\r\n\r\n\t\tpublic ValidationResults Validat" +
-                    "ion { get; set; }\r\n\r\n\t\tpublic bool TryUpdate(");
+                    "ion { get; set; } = ValidationResults.Empty;\r\n\r\n\t\tpublic bool TryUpdate(");
             
-            #line 97 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 99 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tif (!");
             
-            #line 99 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 101 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(isPrefix));
             
             #line default
             #line hidden
             this.Write("Modified)\r\n\t\t\t\treturn SetValidated();\r\n");
             
-            #line 101 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 103 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	if (view.Fields.Any(o => !o.IsExcluded && o.FieldName == "DateDeleted"))
 	{
@@ -298,7 +298,7 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t\tif (DateDeleted != null && IsNew)\r\n\t\t\t\treturn true;\r\n");
             
-            #line 107 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 109 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	}
 
@@ -310,21 +310,21 @@ var objNamespace = Project.Namespace ?? "Entities";
                     "(\"this\", this.Dump());\r\n\t\t\t\tthrow;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tpublic async Task<bool> TryUp" +
                     "dateAsync(");
             
-            #line 124 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 126 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tif (!");
             
-            #line 126 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 128 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(isPrefix));
             
             #line default
             #line hidden
             this.Write("Modified)\r\n\t\t\t\treturn SetValidated();\r\n");
             
-            #line 128 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 130 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	if (view.Fields.Any(o => !o.IsExcluded && o.FieldName == "DateDeleted"))
 	{
@@ -334,14 +334,14 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t\tif (DateDeleted != null && ");
             
-            #line 132 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 134 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(isPrefix));
             
             #line default
             #line hidden
             this.Write("New)\r\n\t\t\t\treturn true;\r\n");
             
-            #line 134 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 136 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	}
 
@@ -378,7 +378,7 @@ var objNamespace = Project.Namespace ?? "Entities";
 
 		public void Update(");
             
-            #line 165 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 167 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
@@ -386,7 +386,7 @@ var objNamespace = Project.Namespace ?? "Entities";
             this.Write(")\r\n\t\t{\r\n\t\t\tif (!TryUpdate(dc))\r\n\t\t\t\tValidation.Invariant(\"Update\", () => this.Dum" +
                     "p());\r\n\t\t}\r\n\r\n\t\tpublic async Task UpdateAsync(");
             
-            #line 171 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 173 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
@@ -394,7 +394,7 @@ var objNamespace = Project.Namespace ?? "Entities";
             this.Write(")\r\n\t\t{\r\n\t\t\tif (!await TryUpdateAsync(dc))\r\n\t\t\t\tValidation.Invariant(\"UpdateAsync\"" +
                     ", () => this.Dump());\r\n\t\t}\r\n");
             
-            #line 176 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 178 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	foreach (var method in table.Loads)
 	{
@@ -408,119 +408,119 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\r\n\t\tpublic static ");
             
-            #line 185 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 187 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
-            this.Write(" Try");
+            this.Write("? Try");
             
-            #line 185 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 187 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 185 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 187 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o => o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 185 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 187 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tvar record = ");
             
-            #line 187 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 189 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 187 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 189 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 187 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 189 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", dc);\r\n\t\t\treturn record == null ? null: new ");
             
-            #line 188 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 190 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("(record);\r\n\t\t}\r\n\r\n\t\tpublic static async Task<");
             
-            #line 191 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 193 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
-            this.Write("> Try");
+            this.Write("?> Try");
             
-            #line 191 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 193 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 191 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 193 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 191 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 193 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tvar record = await ");
             
-            #line 193 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 195 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 193 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 195 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 193 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 195 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", dc);\r\n\t\t\treturn record == null ? null: new ");
             
-            #line 194 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 196 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("(record);\r\n\t\t}\r\n");
             
-            #line 196 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 198 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	}
 
@@ -536,42 +536,42 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\r\n\t\tpublic static ");
             
-            #line 207 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 209 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 207 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 209 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 207 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 209 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 207 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 209 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tAssertion.Ensures(Assertion.Result<");
             
-            #line 209 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 211 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">() != null);\r\n");
             
-            #line 210 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 212 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 			if (keys.Count == 1) {
 
@@ -580,35 +580,35 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t\treturn Try");
             
-            #line 213 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 215 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 213 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 215 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", dc) ?? throw EX.ArgumentOutOfRange(nameof(");
             
-            #line 213 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 215 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)));
             
             #line default
             #line hidden
             this.Write("), ");
             
-            #line 213 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 215 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)));
             
             #line default
             #line hidden
             this.Write(");\r\n");
             
-            #line 214 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 216 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 			}
 			else
@@ -619,35 +619,35 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t\treturn Try");
             
-            #line 219 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 221 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 219 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 221 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", dc) ?? throw EX.ArgumentOutOfRange($\"(");
             
-            #line 219 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 221 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(",", keys.Select(o=> "{nameof(" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")}"))));
             
             #line default
             #line hidden
             this.Write(")\", (");
             
-            #line 219 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 221 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write("));\r\n");
             
-            #line 220 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 222 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 			}
 
@@ -656,42 +656,42 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t}\r\n\r\n\t\tpublic static async Task<");
             
-            #line 225 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 227 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("> ");
             
-            #line 225 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 227 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 225 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 227 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 225 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 227 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tAssertion.Ensures(Assertion.Result<");
             
-            #line 227 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 229 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">() != null);\r\n");
             
-            #line 228 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 230 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 			if (keys.Count == 1) {
 
@@ -700,35 +700,35 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t\treturn await Try");
             
-            #line 231 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 233 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 231 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 233 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", dc) ?? throw EX.ArgumentOutOfRange(\"");
             
-            #line 231 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 233 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)));
             
             #line default
             #line hidden
             this.Write("\", ");
             
-            #line 231 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 233 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)));
             
             #line default
             #line hidden
             this.Write(");\r\n");
             
-            #line 232 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 234 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 			}
 			else
@@ -739,28 +739,28 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t\treturn await Try");
             
-            #line 237 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 239 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 237 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 239 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", dc) ?? throw EX.ArgumentOutOfRange().");
             
-            #line 237 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 239 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(".", keys.Select(o=> "Add(\"" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + "\", " + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")"))));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 238 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 240 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 			}
 
@@ -769,7 +769,7 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t}\r\n");
             
-            #line 242 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 244 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	} // end of table.Load
 
@@ -792,159 +792,159 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\r\n\t\tpublic static ");
             
-            #line 260 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 262 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 260 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 262 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(method2Name));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 260 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 262 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.NullabeCsType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 260 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 262 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(keyName));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 260 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 262 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tAssertion.Ensures(Assertion.Result<");
             
-            #line 262 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 264 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">() != null);\r\n\t\t\treturn ");
             
-            #line 263 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 265 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(checkKey));
             
             #line default
             #line hidden
             this.Write(" ? ");
             
-            #line 263 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 265 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 263 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 265 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(keyName));
             
             #line default
             #line hidden
             
-            #line 263 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 265 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.CliType.IsValueType ? ".GetValueOrDefault()": ""));
             
             #line default
             #line hidden
             this.Write(", dc): new ");
             
-            #line 263 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 265 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("();\r\n\t\t}\r\n\r\n\t\tpublic static async Task<");
             
-            #line 266 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 268 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("> ");
             
-            #line 266 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 268 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(method2Name));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 266 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 268 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.NullabeCsType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 266 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 268 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(keyName));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 266 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 268 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tAssertion.Ensures(Assertion.Result<");
             
-            #line 268 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 270 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">() != null);\r\n\t\t\treturn ");
             
-            #line 269 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 271 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(checkKey));
             
             #line default
             #line hidden
             this.Write(" ? await ");
             
-            #line 269 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 271 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(methodName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 269 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 271 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(keyName));
             
             #line default
             #line hidden
             
-            #line 269 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 271 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.CliType.IsValueType ? ".GetValueOrDefault()": ""));
             
             #line default
             #line hidden
             this.Write(", dc): new ");
             
-            #line 269 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 271 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("();\r\n\t\t}\r\n");
             
-            #line 271 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 273 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	}
 
@@ -957,21 +957,21 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\r\n\t\tpublic void Delete(");
             
-            #line 279 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 281 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\t_record.DateDeleted = ");
             
-            #line 281 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 283 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Project.Expression["timestamp"]));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 282 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 284 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 		if (user == null || !view.Fields.Any(o => !o.IsExcluded && o.FieldName == "DeletedBy"))
 		{
@@ -981,14 +981,14 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t\tif (!");
             
-            #line 286 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 288 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(isPrefix));
             
             #line default
             #line hidden
             this.Write("New)\r\n\t\t\t\tUpdate(dc);\r\n");
             
-            #line 288 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 290 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 		}
 		else
@@ -999,21 +999,21 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t\tif (");
             
-            #line 293 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 295 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(isPrefix));
             
             #line default
             #line hidden
             this.Write("New)\r\n\t\t\t\t_record.DeletedBy = ");
             
-            #line 294 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 296 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(user));
             
             #line default
             #line hidden
             this.Write(";\r\n\t\t\telse\r\n\t\t\t\tUpdate(dc);\r\n");
             
-            #line 297 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 299 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 		}
 
@@ -1022,21 +1022,21 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t}\r\n\r\n\t\tpublic async Task DeleteAsync(");
             
-            #line 302 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 304 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\t_record.DateDeleted = ");
             
-            #line 304 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 306 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Project.Expression["timestamp"]));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 305 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 307 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 		if (user == null || !view.Fields.Any(o => !o.IsExcluded && o.FieldName == "DeletedBy"))
 		{
@@ -1046,14 +1046,14 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t\tif (!");
             
-            #line 309 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 311 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(isPrefix));
             
             #line default
             #line hidden
             this.Write("New)\r\n\t\t\t\tawait UpdateAsync(dc);\r\n");
             
-            #line 311 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 313 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 		}
 		else
@@ -1064,21 +1064,21 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t\tif (");
             
-            #line 316 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 318 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(isPrefix));
             
             #line default
             #line hidden
             this.Write("New)\r\n\t\t\t\t_record.DeletedBy = ");
             
-            #line 317 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 319 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(user));
             
             #line default
             #line hidden
             this.Write(";\r\n\t\t\telse\r\n\t\t\t\tawait UpdateAsync(dc);\r\n");
             
-            #line 320 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 322 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 		}
 
@@ -1087,7 +1087,7 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\t\t}\r\n");
             
-            #line 324 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 326 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	}
 
@@ -1104,63 +1104,63 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\r\n\t\t//public static bool Delete(");
             
-            #line 336 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 338 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 336 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 338 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t//{\r\n\t\t//\treturn ");
             
-            #line 338 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 340 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(".Delete(");
             
-            #line 338 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 340 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", dc);\r\n\t\t//}\r\n\r\n\t\t//public static Task<bool> DeleteAsync(");
             
-            #line 341 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 343 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 341 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 343 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t//{\r\n\t\t//\treturn ");
             
-            #line 343 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 345 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(".DeleteAsync(");
             
-            #line 343 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 345 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))));
             
             #line default
             #line hidden
             this.Write(", dc);\r\n\t\t//}\r\n");
             
-            #line 345 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 347 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	}
 
@@ -1170,7 +1170,7 @@ var objNamespace = Project.Namespace ?? "Entities";
             this.Write("\r\n\t\tpublic DumpWriter DumpContent(DumpWriter writer)\r\n\t\t{\r\n\t\t\treturn _record.Dump" +
                     "Content(writer);\r\n\t\t}\r\n\r\n\t\t#region Collect\r\n");
             
-            #line 355 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 357 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	if (keyColumn.CsType == "int" && table.KeyFields.Count == 1) {
 
@@ -1179,77 +1179,77 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\r\n\t\tpublic static IEnumerable<");
             
-            #line 359 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 361 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("> Collect(IEnumerable<int> ids, bool ordered = false, ");
             
-            #line 359 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 361 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tAssertion.Ensures(Assertion.Result<IEnumerable<");
             
-            #line 361 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 363 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">>() != null);\r\n\t\t\treturn ");
             
-            #line 362 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 364 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(".Collect(ids, ordered, dc).Select(o=> new ");
             
-            #line 362 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 364 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("(o));\r\n\t\t}\r\n\r\n\t\tpublic static async Task<IEnumerable<");
             
-            #line 365 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 367 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">> CollectAsync(IEnumerable<int> ids, bool ordered = false, ");
             
-            #line 365 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 367 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tAssertion.Ensures(Assertion.Result<IEnumerable<");
             
-            #line 367 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 369 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">>() != null);\r\n\t\t\treturn (await ");
             
-            #line 368 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 370 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(".CollectAsync(ids, ordered, dc)).Select(o=> new ");
             
-            #line 368 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 370 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("(o));\r\n\t\t}\r\n");
             
-            #line 370 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 372 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	}
 
@@ -1273,105 +1273,105 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\r\n\t\tpublic static IEnumerable<");
             
-            #line 389 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 391 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("> CollectBy");
             
-            #line 389 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 391 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("(IEnumerable<int> ids, bool ordered = false, ");
             
-            #line 389 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 391 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tAssertion.Ensures(Assertion.Result<IEnumerable<");
             
-            #line 391 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 393 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">>() != null);\r\n\t\t\treturn ");
             
-            #line 392 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 394 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(".CollectBy");
             
-            #line 392 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 394 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("(ids, ordered, dc).Select(o=> new ");
             
-            #line 392 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 394 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("(o));\r\n\t\t}\r\n\r\n\t\tpublic static async Task<IEnumerable<");
             
-            #line 395 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 397 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">> CollectBy");
             
-            #line 395 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 397 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("Async(IEnumerable<int> ids, bool ordered = false, ");
             
-            #line 395 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 397 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tAssertion.Ensures(Assertion.Result<IEnumerable<");
             
-            #line 397 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 399 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">>() != null);\r\n\t\t\treturn (await ");
             
-            #line 398 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 400 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(".CollectBy");
             
-            #line 398 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 400 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("Async(ids, ordered, dc)).Select(o=> new ");
             
-            #line 398 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 400 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("(o));\r\n\t\t}\r\n");
             
-            #line 400 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 402 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	}
 
@@ -1390,147 +1390,147 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\r\n\t\tpublic static IEnumerable<");
             
-            #line 414 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 416 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("> CollectBy");
             
-            #line 414 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 416 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 414 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 416 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.CsType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 414 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 416 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(idName));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 414 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 416 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tAssertion.Ensures(Assertion.Result<IEnumerable<");
             
-            #line 416 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 418 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">>() != null);\r\n\t\t\treturn ");
             
-            #line 417 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 419 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(".CollectBy");
             
-            #line 417 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 419 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 417 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 419 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(idName));
             
             #line default
             #line hidden
             this.Write(", dc).Select(o=> new ");
             
-            #line 417 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 419 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("(o));\r\n\t\t}\r\n\r\n\t\tpublic static async Task<IEnumerable<");
             
-            #line 420 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 422 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">> CollectBy");
             
-            #line 420 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 422 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 420 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 422 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(key.CsType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 420 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 422 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(idName));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 420 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 422 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tAssertion.Ensures(Assertion.Result<IEnumerable<");
             
-            #line 422 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 424 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">>() != null);\r\n\t\t\treturn (await ");
             
-            #line 423 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 425 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(".CollectBy");
             
-            #line 423 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 425 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 423 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 425 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(idName));
             
             #line default
             #line hidden
             this.Write(", dc)).Select(o=> new ");
             
-            #line 423 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 425 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("(o));\r\n\t\t}\r\n");
             
-            #line 425 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 427 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	}
 
@@ -1548,133 +1548,133 @@ var objNamespace = Project.Namespace ?? "Entities";
             #line hidden
             this.Write("\r\n\t\tpublic static IEnumerable<");
             
-            #line 438 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 440 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("> ");
             
-            #line 438 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 440 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 438 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 440 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(method.MakeDeclaration()));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 438 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 440 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tAssertion.Ensures(Assertion.Result<IEnumerable<");
             
-            #line 440 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 442 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">>() != null);\r\n\t\t\treturn ");
             
-            #line 441 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 443 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 441 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 443 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 441 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 443 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(method.MakeParameters()));
             
             #line default
             #line hidden
             this.Write(", dc).Select(o=> new ");
             
-            #line 441 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 443 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("(o));\r\n\t\t}\r\n\r\n\t\tpublic static async Task<IEnumerable<");
             
-            #line 444 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 446 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">> ");
             
-            #line 444 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 446 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 444 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 446 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(method.MakeDeclaration()));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 444 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 446 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dcDeclare));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t{\r\n\t\t\tAssertion.Ensures(Assertion.Result<IEnumerable<");
             
-            #line 446 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 448 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write(">>() != null);\r\n\t\t\treturn (await ");
             
-            #line 447 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 449 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(recordName));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 447 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 449 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 447 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 449 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(method.MakeParameters()));
             
             #line default
             #line hidden
             this.Write(", dc)).Select(o=> new ");
             
-            #line 447 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 449 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             
             #line default
             #line hidden
             this.Write("(o));\r\n\t\t}\r\n");
             
-            #line 449 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
+            #line 451 "C:\Projects\kraftpro\Lexxys.T1\src\Lexxys.T1\Templates\ObjectTemplate.tt"
 
 	}
 

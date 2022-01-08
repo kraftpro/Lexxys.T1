@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ if (Project == null)
 
 var sqlTools = Project.Expression.SqlTools;
 var dc = $"(dc ?? {Project.Expression.StaticContext})";
-var dcDeclare = $"{Project.Expression.DataContextType} dc = null";
+var dcDeclare = $"{Project.Expression.DataContextType}? dc = null";
 
 foreach (var u in Project.Using)
 {
@@ -38,6 +39,8 @@ using <#=v#>
 <#
 }
 #>
+
+#nullable enable
 
 namespace <#=Project.Namespace ?? "Entities"#>.Data
 {
@@ -69,7 +72,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 		}
 #>
 
-		private <#=recordName#> _originalCopy;
+		private <#=recordName#>? _originalCopy;
 		private static readonly <#=recordName#> _emptyRecord = new <#=recordName#>();
 		#endregion
 
@@ -80,6 +83,12 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 		for (int i = 0; i < initializators.Count; ++i)
 		{
 #>			<#=initializators[i].Field.FieldName#> = <#=initializators[i].Expression#>;
+<#		}
+		foreach (var field in view.Fields.Union(cls.ExtraFields))
+		{
+			if (field.Empty == null || initializators.Any(o => o.Field.FieldName == field.FieldName))
+				continue;
+#>			<#=field.FieldName#> = <#=field.Empty#>;
 <#		}
 #>		}
 
@@ -190,11 +199,11 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			{
 #>
 
-		public static <#=a.AsAsync#><#=a.Type(recordName)#> <#=methodName#><#=a.Async#>(<#=method.MakeDeclaration(dcDeclare)#>)
+		public static <#=a.AsAsync#><#=a.Type(recordName + "?")#> <#=methodName#><#=a.Async#>(<#=method.MakeDeclaration(dcDeclare)#>)
 		{
 			try
 			{
-				<#=recordName#> record = null;
+				<#=recordName#>? record = null;
 				<#=a.Await#>Lexxys.Data.DataContextExtensions.Map<#=a.Async#>(<#=dc#>, 1, o => (record = new <#=recordName#>()).LoadRecord(o, 0),
 					<#=chooseExpression == null ? Strings.EscapeCsString(queryClause): $"{tableName}[{chooseExpression}]"#>,
 <#
@@ -924,7 +933,8 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 		}
 #>
 
-		public DumpWriter DumpContent(DumpWriter writer)
+		[return: NotNullIfNotNull("writer")]
+		public DumpWriter? DumpContent(DumpWriter? writer)
 		{
 			if (writer == null)
 				return null;
@@ -947,7 +957,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			return writer;
 		}
 
-		public <#=recordName#> MakeACopy(<#=recordName#> that = null)
+		public <#=recordName#> MakeACopy(<#=recordName#>? that = null)
 		{
 			if (that == null || that == _emptyRecord)
 				that = new <#=recordName#>();
@@ -961,7 +971,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 #>			return that;
 		}
 
-		private <#=recordName#> CopyRecord(<#=recordName#> that)
+		private <#=recordName#> CopyRecord(<#=recordName#>? that)
 		{
 <#
 		var computedFields = view.Fields.Where(o => o.ControlledByDatasource || !o.IsDeterministic).ToList();

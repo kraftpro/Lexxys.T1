@@ -110,6 +110,7 @@ CREATE TABLE [dbo].[Course]([CourseID] [int] NOT NULL,
 [Title] [nvarchar](100) NOT NULL,
 [Credits] [int] NOT NULL,
 [DepartmentID] [int] NOT NULL,
+[Description] [nvarchar](MAX) NULL,
 CONSTRAINT [PK_School.Course] PRIMARY KEY CLUSTERED
 (
 [CourseID] ASC

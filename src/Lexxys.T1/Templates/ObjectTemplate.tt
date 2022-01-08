@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 using Lexxys;
 <#
-var dcDeclare = $"{Project.Expression.DataContextType} dc = null";
+var dcDeclare = $"{Project.Expression.DataContextType}? dc = null";
 
 foreach (var u in Project.Using)
 {
@@ -31,6 +31,8 @@ using <#=v#>
 }
 var objNamespace = Project.Namespace ?? "Entities";
 #>
+
+#nullable enable
 
 namespace <#=objNamespace#>
 {
@@ -71,8 +73,8 @@ namespace <#=objNamespace#>
 		if (!field.IsReadonly && !field.IsProtected && !field.IsPrivate && !field.IsPrimaryKey && !field.IsIdentity && !field.IsComputed && field.InitializationExpression == null)
 		{
 #>		public <#=field.CsFieldType#> <#=fieldName#> { get => _record.<#=field.FieldName#>; set => _record.<#=field.FieldName#> = <#=
-				field.CsType == "string" ? "value.TrimToNull()":
-				field.CsType == "byte[]" ? "value == null || value.Length == 0 ? null: value": "value"
+				field.CsType == "string" ? (field.IsNullable ? "value.TrimToNull()": "value.Trim()"):
+				field.CsType == "byte[]" && field.IsNullable ? "value == null || value.Length == 0 ? null: value": "value"
 				#>; }
 
 <#
@@ -92,7 +94,7 @@ namespace <#=objNamespace#>
 
 		#endregion
 
-		public ValidationResults Validation { get; set; }
+		public ValidationResults Validation { get; set; } = ValidationResults.Empty;
 
 		public bool TryUpdate(<#=dcDeclare#>)
 		{
@@ -182,13 +184,13 @@ namespace <#=objNamespace#>
 		var methodName = method.NameByParameters("Load");
 #>
 
-		public static <#=className#> Try<#=methodName#>(<#=string.Join(", ", keys.Select(o => o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, <#=dcDeclare#>)
+		public static <#=className#>? Try<#=methodName#>(<#=string.Join(", ", keys.Select(o => o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, <#=dcDeclare#>)
 		{
 			var record = <#=recordName#>.<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc);
 			return record == null ? null: new <#=className#>(record);
 		}
 
-		public static async Task<<#=className#>> Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, <#=dcDeclare#>)
+		public static async Task<<#=className#>?> Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, <#=dcDeclare#>)
 		{
 			var record = await <#=recordName#>.<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc);
 			return record == null ? null: new <#=className#>(record);

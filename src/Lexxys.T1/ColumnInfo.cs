@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 using System.Text.RegularExpressions;
+using Microsoft.VisualBasic;
 
 
 namespace Lexxys.T1
@@ -32,15 +33,16 @@ namespace Lexxys.T1
         public string Validation { get; }
         public string MinValue { get; }
         public string MaxValue { get; }
+		public string Empty { get; }
 
         private readonly ClassConfig _class;
 		private readonly TableInfo _table;
 
-		public string CsFieldType => IsNullable && CliType.IsValueType ? CsType + "?": CsType;
+		public string CsFieldType => IsNullable /*&& CliType.IsValueType*/ ? CsType + "?": CsType;
 
-		public string NullabeCsType => CliType.IsValueType ? CsType + "?" : CsType;
+		public string NullabeCsType => CsType + "?"; //CliType.IsValueType ? CsType + "?" : CsType;
 
-		public string DbCsFieldType => IsNullable && DbCliType.IsValueType ? DbCsType + "?": DbCsType;
+		public string DbCsFieldType => IsNullable /*&& DbCliType.IsValueType*/ ? DbCsType + "?": DbCsType;
 
 		public string FieldName => IsReference && !Name.EndsWith("Id") && !Name.EndsWith("Ein") && !Name.EndsWith("By") ? Name + "Id": Name;
 
@@ -116,7 +118,7 @@ namespace Lexxys.T1
 			IsPrimaryKey = def.IsPrimaryKey;
 			Order = def.ColumnId;
 
-			(SqlDbType, DbType, CsType, CliType, DbCsType, DbCliType, Length, MinValue, MaxValue) = GroomSqlType(SqlType, Size, Precision, Scale);
+			(SqlDbType, DbType, CsType, CliType, DbCsType, DbCliType, Length, MinValue, MaxValue, Empty) = GroomSqlType(SqlType, Size, Precision, Scale);
 
 			string name = Template.DataConfig.Rename
 				.Where(o => Regex.IsMatch(def.FieldName, o.Original))
@@ -150,7 +152,7 @@ namespace Lexxys.T1
 			static bool Match2(string item, string value, string value2) => String.IsNullOrEmpty(item) || item == "*" || String.Equals(item, value, StringComparison.OrdinalIgnoreCase) || String.Equals(item, value2, StringComparison.OrdinalIgnoreCase);
 		}
 
-		private static (SqlDbType SqlDbType, DbType DbType, string CsType, Type CliType, string DbCsType, Type DbCliType, int Length, string MinValue, string MaxValue) GroomSqlType(string SqlType, int Size, int Precision, int Scale)
+		private static (SqlDbType SqlDbType, DbType DbType, string CsType, Type CliType, string DbCsType, Type DbCliType, int Length, string MinValue, string MaxValue, string Empty) GroomSqlType(string SqlType, int Size, int Precision, int Scale)
 		{
             SqlDbType SqlDbType;
             DbType DbType;
@@ -160,6 +162,7 @@ namespace Lexxys.T1
             Type DbCliType = null;
             string MinValue = null;
             string MaxValue = null;
+			string Empty = null;
 
             int Length = 0;
 			switch (SqlType)
@@ -293,6 +296,7 @@ namespace Lexxys.T1
 					CsType = "string";
 					CliType = typeof(string);
 					Length = Size;
+					Empty = "String.Empty";
 					break;
 				case "varchar":
 					SqlDbType = SqlDbType.VarChar;
@@ -300,6 +304,7 @@ namespace Lexxys.T1
 					CsType = "string";
 					CliType = typeof(string);
 					Length = Size;
+					Empty = "String.Empty";
 					break;
 				case "nchar":
 					SqlDbType = SqlDbType.NChar;
@@ -307,6 +312,7 @@ namespace Lexxys.T1
 					CsType = "string";
 					CliType = typeof(string);
 					Length = Size / 2;
+					Empty = "String.Empty";
 					break;
 				case "nvarchar":
 					SqlDbType = SqlDbType.NVarChar;
@@ -314,6 +320,7 @@ namespace Lexxys.T1
 					CsType = "string";
 					CliType = typeof(string);
 					Length = Size / 2;
+					Empty = "String.Empty";
 					break;
 				case "sysname":
 					SqlDbType = SqlDbType.VarChar;
@@ -321,6 +328,7 @@ namespace Lexxys.T1
 					CsType = "string";
 					CliType = typeof(string);
 					Length = Size;
+					Empty = "String.Empty";
 					break;
 				case "binary":
 					SqlDbType = SqlDbType.Binary;
@@ -328,6 +336,7 @@ namespace Lexxys.T1
 					CsType = "byte[]";
 					CliType = typeof(byte[]);
 					Length = Size;
+					Empty = "Array.Empty<byte>()";
 					break;
 				case "varbinary":
 					SqlDbType = SqlDbType.VarBinary;
@@ -335,12 +344,14 @@ namespace Lexxys.T1
 					CsType = "byte[]";
 					CliType = typeof(byte[]);
 					Length = Size;
+					Empty = "Array.Empty<byte>()";
 					break;
 				case "image":
 					SqlDbType = SqlDbType.Image;
 					DbType = DbType.Binary;
 					CsType = "byte[]";
 					CliType = typeof(byte[]);
+					Empty = "Array.Empty<byte>()";
 					break;
 				case "ntext":
 					SqlDbType = SqlDbType.NText;
@@ -353,6 +364,7 @@ namespace Lexxys.T1
 					DbType = DbType.String;
 					CsType = "string";
 					CliType = typeof(string);
+					Empty = "String.Empty";
 					break;
 				case "timestamp":
 				case "rowversion":
@@ -374,6 +386,7 @@ namespace Lexxys.T1
 					DbType = DbType.Xml;
 					CsType = "string";
 					CliType = typeof(string);
+					Empty = "String.Empty";
 					break;
 				default:
 					throw EX.ArgumentOutOfRange(nameof(SqlType), SqlType);
@@ -391,7 +404,8 @@ namespace Lexxys.T1
                 DbCliType,
                 Length,
                 MinValue,
-                MaxValue
+                MaxValue,
+				Empty
                 );
 		}
 
