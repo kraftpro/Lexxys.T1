@@ -10,7 +10,7 @@ namespace T1.App
 	{
 		static void Main(string[] args)
 		{
-			var pp = Config.GetList<Lexxys.Xml.XmlLiteNode>("projects.projects.project")?.Select(o => o["name"] ?? "*").ToIList();
+			var pp = Config.Current.GetCollection<Lexxys.Xml.XmlLiteNode>("projects.projects.project").Value?.Select(o => o["name"] ?? "*").ToIList();
 
 			if (pp == null || pp.Count == 0)
 			{

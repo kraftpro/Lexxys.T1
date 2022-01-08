@@ -48,7 +48,7 @@ namespace Lexxys.T1
 			static string EntityName(string value)
 			{
 				value = Tool.NormalizeName(value, NameStyle.PublicName);
-				string[] parts = Strings.SplitByCapitals(value);
+				var parts = Strings.SplitByCapitals(value).Select(o => value.Substring(o.Index, o.Length));
 				value = String.Join("", parts.Select(o => o == "Details" ? o: o == "Bases" ? "Basis": o == "Data" ? "Data" : Lingua.Singular(o)));
 				return value;
 			}

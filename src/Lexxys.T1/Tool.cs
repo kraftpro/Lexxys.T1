@@ -25,7 +25,7 @@ namespace Lexxys.T1
 				}
 			}
 
-			string[] parts = Strings.SplitByCapitals(name);
+			var parts = Strings.SplitByCapitals(name).Select(o => name.Substring(o.Index, o.Length));
 			name = String.Join("", parts.Select((o, i) => i > 0 && o == "_" ? "": o.Substring(0, 1).ToUpperInvariant() + o.Substring(1).ToLowerInvariant()));
 
 			if ((nameStyle & NameStyle.Public) != 0)

@@ -76,9 +76,11 @@ namespace Lexxys.T1
             (name.EndsWith("Id", StringComparison.Ordinal) ||
             name.EndsWith("By", StringComparison.Ordinal)) ? name.Substring(0, name.Length - 2) : name;
 
-        public string MakeDeclaration() => String.Join(", ", Fields.Select(o => $"{o.CsFieldType    } {o.GetLocalName()}"));
+        public string MakeDeclaration(string extra = null) => JoinParams(String.Join(", ", Fields.Select(o => $"{o.CsFieldType} {o.GetLocalName()}")), extra);
 
-        public string MakeParameters() => String.Join(", ", Fields.Select(o => o.GetLocalName()));
+        public string MakeParameters(string extra = null) => JoinParams(String.Join(", ", Fields.Select(o => o.GetLocalName())), extra);
+
+        private static string JoinParams(string left, string right) => String.IsNullOrEmpty(left) ? right: String.IsNullOrEmpty(right) ? left: left + ", " + right;
 
         public string MakeWhere(bool excludeNulls) => " where " + (Where ?? String.Join(" and ", Fields.Where(o => !excludeNulls || !o.IsNullable).Select(o => o.IsNullable ? $"[({o.Bind}] ia null and @{o.GetSqlParameterName()} is null or [{o.Bind}]=@{o.GetSqlParameterName()})" : $"[{o.Bind}]=@{o.GetSqlParameterName()}")));
 

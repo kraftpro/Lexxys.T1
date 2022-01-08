@@ -33,17 +33,17 @@ namespace Lexxys.T1
 			if (parameters == null)
 				throw new ArgumentNullException(nameof(parameters));
 
-			Parameters defaults = Lexxys.Config.GetValue<Parameters>("parameters") ?? new Parameters();
+			Parameters defaults = Lexxys.Config.Current.GetValue<Parameters>("parameters").Value ?? new Parameters();
 
-			DataConfig = Lexxys.Config.GetValue<DataConfig>("data");
-			var pc = Lexxys.Config.GetValue<ProjectsCollectionConfig>("projects");
+			DataConfig = Lexxys.Config.Current.GetValue<DataConfig>("data").Value;
+			var pc = Lexxys.Config.Current.GetValue<ProjectsCollectionConfig>("projects").Value;
 			string projectName = parameters.ProjectName ?? defaults.ProjectName ?? "Proj";
 			ProjectConfig = pc?.FirstOrDefault(o => String.Equals(o.Name, projectName, StringComparison.OrdinalIgnoreCase));
 
 			if (ProjectConfig == null)
 				throw new ArgumentOutOfRangeException($"Project \"{projectName}\" doesn't defined.");
 
-			ClassesConfig = Config.GetValue<ClassesCollectionConfig>("classes");
+			ClassesConfig = Config.Current.GetValue<ClassesCollectionConfig>("classes").Value;
 
 			var classes = ClassesConfig.ToDictionary(o => o.Table ?? o.Name, StringComparer.OrdinalIgnoreCase);
 			var tables = ProjectConfig.CollectTables(classes, DataConfig.Query, DataConfig.Exclude);
@@ -87,9 +87,9 @@ namespace Lexxys.T1
 			foreach (var arg in parameters.ExtraObjects ?? Array.Empty<string>())
 			{
 				TableInfo table = null;
-				string[] parts = Strings.SplitByCapitals(arg);
-				string[] set = new string[parts.Length];
-				int nn = 1 << parts.Length;
+				var parts = Strings.SplitByCapitals(arg).Select(o => arg.Substring(o.Index, o.Length)).ToList();
+				string[] set = new string[parts.Count];
+				int nn = 1 << parts.Count;
 				for (int n = 0; n < nn; ++n)
 				{
 					parts.CopyTo(set, 0);

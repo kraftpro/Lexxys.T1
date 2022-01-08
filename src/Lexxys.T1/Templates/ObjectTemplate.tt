@@ -5,7 +5,7 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 /*
-	Server: <#=Lexxys.Config.GetValue<Lexxys.ConnectionStringInfo>("database.connection").Server#>
+	Server: <#=Lexxys.Config.Current.GetValue<Lexxys.ConnectionStringInfo>("database.connection").Value?.Server#>
 	File: <#=table.PublicName#>.cs (v <#=System.Reflection.Assembly.GetExecutingAssembly().GetName().Version#> at <#=DateTime.UtcNow.ToString("u")#>)
 */
 using System;
@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 
 using Lexxys;
 <#
+var dcDeclare = $"{Project.Expression.DataContextType} dc = null";
+
 foreach (var u in Project.Using)
 {
 	if (String.IsNullOrEmpty(u))
@@ -65,9 +67,10 @@ namespace <#=objNamespace#>
 		if (field.IsExcluded)
 			continue;
 
+		string fieldName = field.FieldName == className ? field.FieldName + "Value": field.FieldName;
 		if (!field.IsReadonly && !field.IsProtected && !field.IsPrivate && !field.IsPrimaryKey && !field.IsIdentity && !field.IsComputed && field.InitializationExpression == null)
 		{
-#>		public <#=field.CsFieldType#> <#=field.FieldName#> { get => _record.<#=field.FieldName#>; set => _record.<#=field.FieldName#> = <#=
+#>		public <#=field.CsFieldType#> <#=fieldName#> { get => _record.<#=field.FieldName#>; set => _record.<#=field.FieldName#> = <#=
 				field.CsType == "string" ? "value.TrimToNull()":
 				field.CsType == "byte[]" ? "value == null || value.Length == 0 ? null: value": "value"
 				#>; }
@@ -76,23 +79,24 @@ namespace <#=objNamespace#>
 		}
 		else
 		{
-#>		public <#=field.CsFieldType#> <#=field.FieldName#> => _record.<#=field.FieldName#>;
+#>		public <#=field.CsFieldType#> <#=fieldName#> => _record.<#=field.FieldName#>;
 
 <#
 		}
 	}
+	string isPrefix = view.Fields.Any(o => o.FieldName == "IsNew" || o.FieldName == "IsModified") ? "IsObject": "Is";
 #>
-		public bool IsModified => _record.IsRecordModified;
+		public bool <#=isPrefix#>Modified => _record.IsRecordModified;
 
-		public bool IsNew => _record.IsRecordNew;
+		public bool <#=isPrefix#>New => _record.IsRecordNew;
 
 		#endregion
 
 		public ValidationResults Validation { get; set; }
 
-		public bool TryUpdate()
+		public bool TryUpdate(<#=dcDeclare#>)
 		{
-			if (!IsModified)
+			if (!<#=isPrefix#>Modified)
 				return SetValidated();
 <#
 	if (view.Fields.Any(o => !o.IsExcluded && o.FieldName == "DateDeleted"))
@@ -107,7 +111,7 @@ namespace <#=objNamespace#>
 				return false;
 			try
 			{
-				_record.SaveChanges();
+				_record.SaveChanges(dc);
 				return true;
 			}
 			catch (Exception flaw)
@@ -117,15 +121,15 @@ namespace <#=objNamespace#>
 			}
 		}
 
-		public async Task<bool> TryUpdateAsync()
+		public async Task<bool> TryUpdateAsync(<#=dcDeclare#>)
 		{
-			if (!IsModified)
+			if (!<#=isPrefix#>Modified)
 				return SetValidated();
 <#
 	if (view.Fields.Any(o => !o.IsExcluded && o.FieldName == "DateDeleted"))
 	{
 #>
-			if (DateDeleted != null && IsNew)
+			if (DateDeleted != null && <#=isPrefix#>New)
 				return true;
 <#
 	}
@@ -134,7 +138,7 @@ namespace <#=objNamespace#>
 				return false;
 			try
 			{
-				await _record.SaveChangesAsync();
+				await _record.SaveChangesAsync(dc);
 				return true;
 			}
 			catch (Exception flaw)
@@ -158,15 +162,15 @@ namespace <#=objNamespace#>
 			return Validation = results;
 		}
 
-		public void Update()
+		public void Update(<#=dcDeclare#>)
 		{
-			if (!TryUpdate())
+			if (!TryUpdate(dc))
 				Validation.Invariant("Update", () => this.Dump());
 		}
 
-		public async Task UpdateAsync()
+		public async Task UpdateAsync(<#=dcDeclare#>)
 		{
-			if (!await TryUpdateAsync())
+			if (!await TryUpdateAsync(dc))
 				Validation.Invariant("UpdateAsync", () => this.Dump());
 		}
 <#
@@ -178,15 +182,15 @@ namespace <#=objNamespace#>
 		var methodName = method.NameByParameters("Load");
 #>
 
-		public static <#=className#> Try<#=methodName#>(<#=string.Join(", ", keys.Select(o => o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		public static <#=className#> Try<#=methodName#>(<#=string.Join(", ", keys.Select(o => o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, <#=dcDeclare#>)
 		{
-			var record = <#=recordName#>.<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>);
+			var record = <#=recordName#>.<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc);
 			return record == null ? null: new <#=className#>(record);
 		}
 
-		public static async Task<<#=className#>> Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		public static async Task<<#=className#>> Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, <#=dcDeclare#>)
 		{
-			var record = await <#=recordName#>.<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>);
+			var record = await <#=recordName#>.<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc);
 			return record == null ? null: new <#=className#>(record);
 		}
 <#
@@ -200,37 +204,37 @@ namespace <#=objNamespace#>
 		var methodName = method.NameByParameters("Load");
 #>
 
-		public static <#=className#> <#=methodName#>(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		public static <#=className#> <#=methodName#>(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, <#=dcDeclare#>)
 		{
 			Assertion.Ensures(Assertion.Result<<#=className#>>() != null);
 <#
 			if (keys.Count == 1) {
 #>
-			return Try<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>) ?? throw EX.ArgumentOutOfRange(nameof(<#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>), <#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>);
+			return Try<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc) ?? throw EX.ArgumentOutOfRange(nameof(<#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>), <#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>);
 <#
 			}
 			else
 			{
 #>
-			return Try<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>) ?? throw EX.ArgumentOutOfRange($"(<#=string.Join(",", keys.Select(o=> "{nameof(" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")}"))#>)", (<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>));
+			return Try<#=methodName#>(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc) ?? throw EX.ArgumentOutOfRange($"(<#=string.Join(",", keys.Select(o=> "{nameof(" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")}"))#>)", (<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>));
 <#
 			}
 #>
 		}
 
-		public static async Task<<#=className#>> <#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		public static async Task<<#=className#>> <#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, <#=dcDeclare#>)
 		{
 			Assertion.Ensures(Assertion.Result<<#=className#>>() != null);
 <#
 			if (keys.Count == 1) {
 #>
-			return await Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>) ?? throw EX.ArgumentOutOfRange("<#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>", <#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>);
+			return await Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc) ?? throw EX.ArgumentOutOfRange("<#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>", <#=Tool.NormalizeName(keys[0].Name, NameStyle.LocalName)#>);
 <#
 			}
 			else
 			{
 #>
-			return await Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>) ?? throw EX.ArgumentOutOfRange().<#=string.Join(".", keys.Select(o=> "Add(\"" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + "\", " + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")"))#>;
+			return await Try<#=methodName#>Async(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc) ?? throw EX.ArgumentOutOfRange().<#=string.Join(".", keys.Select(o=> "Add(\"" + Tool.NormalizeName(o.Name, NameStyle.LocalName) + "\", " + Tool.NormalizeName(o.Name, NameStyle.LocalName) + ")"))#>;
 <#
 			}
 #>
@@ -245,18 +249,24 @@ namespace <#=objNamespace#>
 		var keyName = Tool.NormalizeName(key.Name, NameStyle.LocalName);
 		var methodName = method.NameByParameters("Load");
 		var method2Name = method.Name == "Load" ? "LoadOrCreate": method.NameByParameters("LoadOrCreate");
+		var checkKey = key.CsType switch
+		{
+			"string" => $"!String.IsNullOrEmpty({keyName})",
+			"Guid" => keyName + " != Guid.Empty",
+			_ => keyName + " > 0"
+		};
 #>
 
-		public static <#=className#> <#=method2Name#>(<#=key.NullabeCsType#> <#=keyName#>)
+		public static <#=className#> <#=method2Name#>(<#=key.NullabeCsType#> <#=keyName#>, <#=dcDeclare#>)
 		{
 			Assertion.Ensures(Assertion.Result<<#=className#>>() != null);
-			return Check.IsId(<#=keyName#>) ? <#=methodName#>(<#=keyName#><#=key.CliType.IsValueType ? ".GetValueOrDefault()": ""#>): new <#=className#>();
+			return <#=checkKey#> ? <#=methodName#>(<#=keyName#><#=key.CliType.IsValueType ? ".GetValueOrDefault()": ""#>, dc): new <#=className#>();
 		}
 
-		public static async Task<<#=className#>> <#=method2Name#>Async(<#=key.NullabeCsType#> <#=keyName#>)
+		public static async Task<<#=className#>> <#=method2Name#>Async(<#=key.NullabeCsType#> <#=keyName#>, <#=dcDeclare#>)
 		{
 			Assertion.Ensures(Assertion.Result<<#=className#>>() != null);
-			return Check.IsId(<#=keyName#>) ? await <#=methodName#>Async(<#=keyName#><#=key.CliType.IsValueType ? ".GetValueOrDefault()": ""#>): new <#=className#>();
+			return <#=checkKey#> ? await <#=methodName#>Async(<#=keyName#><#=key.CliType.IsValueType ? ".GetValueOrDefault()": ""#>, dc): new <#=className#>();
 		}
 <#
 	}
@@ -266,47 +276,47 @@ namespace <#=objNamespace#>
 		var user = Project.Expression["user"];
 #>
 
-		public void Delete()
+		public void Delete(<#=dcDeclare#>)
 		{
 			_record.DateDeleted = <#=Project.Expression["timestamp"]#>;
 <#
-		if (user == null)
+		if (user == null || !view.Fields.Any(o => !o.IsExcluded && o.FieldName == "DeletedBy"))
 		{
 #>
-			if (!IsNew)
-				Update();
+			if (!<#=isPrefix#>New)
+				Update(dc);
 <#
 		}
 		else
 		{
 #>
-			if (IsNew)
+			if (<#=isPrefix#>New)
 				_record.DeletedBy = <#=user#>;
 			else
-				Update();
+				Update(dc);
 <#
 		}
 #>
 		}
 
-		public async Task DeleteAsync()
+		public async Task DeleteAsync(<#=dcDeclare#>)
 		{
 			_record.DateDeleted = <#=Project.Expression["timestamp"]#>;
 <#
-		if (user == null)
+		if (user == null || !view.Fields.Any(o => !o.IsExcluded && o.FieldName == "DeletedBy"))
 		{
 #>
-			if (!IsNew)
-				await UpdateAsync();
+			if (!<#=isPrefix#>New)
+				await UpdateAsync(dc);
 <#
 		}
 		else
 		{
 #>
-			if (IsNew)
+			if (<#=isPrefix#>New)
 				_record.DeletedBy = <#=user#>;
 			else
-				await UpdateAsync();
+				await UpdateAsync(dc);
 <#
 		}
 #>
@@ -323,14 +333,14 @@ namespace <#=objNamespace#>
 			continue;
 #>
 
-		//public static bool Delete(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		//public static bool Delete(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, <#=dcDeclare#>)
 		//{
-		//	return <#=recordName#>.Delete(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>);
+		//	return <#=recordName#>.Delete(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc);
 		//}
 
-		//public static Task<bool> DeleteAsync(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		//public static Task<bool> DeleteAsync(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, <#=dcDeclare#>)
 		//{
-		//	return <#=recordName#>.DeleteAsync(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>);
+		//	return <#=recordName#>.DeleteAsync(<#=string.Join(", ", keys.Select(o=> Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, dc);
 		//}
 <#
 	}
@@ -343,19 +353,19 @@ namespace <#=objNamespace#>
 
 		#region Collect
 <#
-	if (table.KeyFields.Count == 1) {
+	if (keyColumn.CsType == "int" && table.KeyFields.Count == 1) {
 #>
 
-		public static IEnumerable<<#=className#>> Collect(IEnumerable<int> ids, bool ordered = false)
+		public static IEnumerable<<#=className#>> Collect(IEnumerable<int> ids, bool ordered = false, <#=dcDeclare#>)
 		{
 			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
-			return <#=recordName#>.Collect(ids, ordered).Select(o=> new <#=className#>(o));
+			return <#=recordName#>.Collect(ids, ordered, dc).Select(o=> new <#=className#>(o));
 		}
 
-		public static async Task<IEnumerable<<#=className#>>> CollectAsync(IEnumerable<int> ids, bool ordered = false)
+		public static async Task<IEnumerable<<#=className#>>> CollectAsync(IEnumerable<int> ids, bool ordered = false, <#=dcDeclare#>)
 		{
 			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
-			return (await <#=recordName#>.CollectAsync(ids, ordered)).Select(o=> new <#=className#>(o));
+			return (await <#=recordName#>.CollectAsync(ids, ordered, dc)).Select(o=> new <#=className#>(o));
 		}
 <#
 	}
@@ -364,25 +374,28 @@ namespace <#=objNamespace#>
 
 	foreach (var key in table.Fields.Where(o => o.IsUnique && o != keyColumn && o.CsType == "int"))
 	{
-		var name = key.FieldName;
-		var idName = name.Substring(0, 1).ToLowerInvariant() + name.Substring(1);
-		if (name.EndsWith("Id", StringComparison.Ordinal))
-			name = name.Substring(0, name.Length - 2);
+		var publicName = key.GetPublicName();
+		var nameItems = Strings.SplitByCapitals(publicName).Select(o => publicName.Substring(o.Index, o.Length)).ToList();
+		int nameItemsCount = nameItems.Count;
+		if (nameItemsCount > 1 && String.Equals(nameItems[nameItemsCount-1], "id", StringComparison.OrdinalIgnoreCase))
+			--nameItemsCount;
+		nameItems[nameItemsCount - 1] = Lingua.Plural(nameItems[nameItemsCount - 1]);
+		var name = String.Concat(nameItems.Take(nameItemsCount));
 		if (collected.Contains(name))
 			continue;
 		collected.Add(name);
 #>
 
-		public static IEnumerable<<#=className#>> CollectBy<#=name#>(IEnumerable<int> ids, bool ordered = false)
+		public static IEnumerable<<#=className#>> CollectBy<#=name#>(IEnumerable<int> ids, bool ordered = false, <#=dcDeclare#>)
 		{
 			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
-			return <#=recordName#>.CollectBy<#=name#>(ids, ordered).Select(o=> new <#=className#>(o));
+			return <#=recordName#>.CollectBy<#=name#>(ids, ordered, dc).Select(o=> new <#=className#>(o));
 		}
 
-		public static async Task<IEnumerable<<#=className#>>> CollectBy<#=name#>Async(IEnumerable<int> ids, bool ordered = false)
+		public static async Task<IEnumerable<<#=className#>>> CollectBy<#=name#>Async(IEnumerable<int> ids, bool ordered = false, <#=dcDeclare#>)
 		{
 			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
-			return (await <#=recordName#>.CollectBy<#=name#>Async(ids, ordered)).Select(o=> new <#=className#>(o));
+			return (await <#=recordName#>.CollectBy<#=name#>Async(ids, ordered, dc)).Select(o=> new <#=className#>(o));
 		}
 <#
 	}
@@ -398,16 +411,16 @@ namespace <#=objNamespace#>
 		collected.Add(name);
 #>
 
-		public static IEnumerable<<#=className#>> CollectBy<#=name#>(<#=key.CsType#> <#=idName#>)
+		public static IEnumerable<<#=className#>> CollectBy<#=name#>(<#=key.CsType#> <#=idName#>, <#=dcDeclare#>)
 		{
 			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
-			return <#=recordName#>.CollectBy<#=name#>(<#=idName#>).Select(o=> new <#=className#>(o));
+			return <#=recordName#>.CollectBy<#=name#>(<#=idName#>, dc).Select(o=> new <#=className#>(o));
 		}
 
-		public static async Task<IEnumerable<<#=className#>>> CollectBy<#=name#>Async(<#=key.CsType#> <#=idName#>)
+		public static async Task<IEnumerable<<#=className#>>> CollectBy<#=name#>Async(<#=key.CsType#> <#=idName#>, <#=dcDeclare#>)
 		{
 			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
-			return (await <#=recordName#>.CollectBy<#=name#>Async(<#=idName#>)).Select(o=> new <#=className#>(o));
+			return (await <#=recordName#>.CollectBy<#=name#>Async(<#=idName#>, dc)).Select(o=> new <#=className#>(o));
 		}
 <#
 	}
@@ -422,16 +435,16 @@ namespace <#=objNamespace#>
 		collected.Add(name);
 #>
 
-		public static IEnumerable<<#=className#>> <#=name#>(<#=method.MakeDeclaration()#>)
+		public static IEnumerable<<#=className#>> <#=name#>(<#=method.MakeDeclaration()#>, <#=dcDeclare#>)
 		{
 			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
-			return <#=recordName#>.<#=name#>(<#=method.MakeParameters()#>).Select(o=> new <#=className#>(o));
+			return <#=recordName#>.<#=name#>(<#=method.MakeParameters()#>, dc).Select(o=> new <#=className#>(o));
 		}
 
-		public static async Task<IEnumerable<<#=className#>>> <#=name#>Async(<#=method.MakeDeclaration()#>)
+		public static async Task<IEnumerable<<#=className#>>> <#=name#>Async(<#=method.MakeDeclaration()#>, <#=dcDeclare#>)
 		{
 			Assertion.Ensures(Assertion.Result<IEnumerable<<#=className#>>>() != null);
-			return (await <#=recordName#>.method<#=name#>Async(<#=method.MakeParameters()#>)).Select(o=> new <#=className#>(o));
+			return (await <#=recordName#>.<#=name#>Async(<#=method.MakeParameters()#>, dc)).Select(o=> new <#=className#>(o));
 		}
 <#
 	}

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Lexxys;
+
 namespace Lexxys.T1
 {
 	public class ProjectsCollectionConfig: IReadOnlyList<ProjectConfig>
@@ -129,10 +131,12 @@ namespace Lexxys.T1
 
 		public string this[string name] => _items.TryGetValue(name, out var value) ? value : null;
 
-		public string LocalTime => this["LocalTime"] ?? "DateTime.Now";
+		public string LocalTime => this["LocalTime"] ?? "Lexxys.Data.Dc.Instance.Now";
 		public string UtcTime => this["UtcTime"] ?? "DateTime.UtcNow";
 		public string TimeStamp => this["Timestamp"] ?? "DateTime.UtcNow";
-		public string DataContext => this["DataContext"] ?? "Dc";
+		public string StaticContext => this["StaticContext"] ?? "Lexxys.Data.Dc.Instance";  // ).TrimToNull() ?? "throw new ArgumentNullException(nameof(dc))";
+		public string SqlTools => this["SqlTools"] ?? "Lexxys.Data.Dc";
+		public string DataContextType => this["DataContextType"] ?? "Lexxys.Data.IDataContext";
 
 		public string Format(string value) =>
 			__format.Replace(value, m => _items.TryGetValue(m.Groups[1].Value, out var item) ? item : m.Value);

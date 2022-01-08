@@ -258,7 +258,7 @@ namespace Lexxys.T1
 					DbType = DbType.DateTime;
 					CsType = "DateTime";
 					CliType = typeof(DateTime);
-					MinValue = "Dc.MinSqlDate";
+					MinValue = "new DateTime(1753, 1, 1)";
 					MaxValue = "DateTime.MaxValue";
 					break;
 				case "datetime2":

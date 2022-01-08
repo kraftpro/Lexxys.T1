@@ -5,7 +5,7 @@
 <#@import namespace="System.Collections.Generic" #>
 <#@import namespace="Lexxys" #>
 /*
-	Server: <#=Lexxys.Config.GetValue<Lexxys.ConnectionStringInfo>("database.connection").Server#>
+	Server: <#=Lexxys.Config.Current.GetValue<Lexxys.ConnectionStringInfo>("database.connection").Value?.Server#>
 	Version <#=System.Reflection.Assembly.GetEntryAssembly().GetName().Version#> at <#=DateTime.UtcNow.ToString("u")#>
 */
 using System;
@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +22,9 @@ using Lexxys;
 if (Project == null)
 	throw new ArgumentNullException(nameof(Project));
 
-var dc = Project.Expression.DataContext;
+var sqlTools = Project.Expression.SqlTools;
+var dc = $"(dc ?? {Project.Expression.StaticContext})";
+var dcDeclare = $"{Project.Expression.DataContextType} dc = null";
 
 foreach (var u in Project.Using)
 {
@@ -189,12 +190,12 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			{
 #>
 
-		public static <#=a.AsAsync#><#=a.Type(recordName)#> <#=methodName#><#=a.Async#>(<#=method.MakeDeclaration()#>)
+		public static <#=a.AsAsync#><#=a.Type(recordName)#> <#=methodName#><#=a.Async#>(<#=method.MakeDeclaration(dcDeclare)#>)
 		{
 			try
 			{
 				<#=recordName#> record = null;
-				<#=a.Await#><#=dc#>.Map<#=a.Async#>(1, o => (record = new <#=recordName#>()).LoadRecord(o, 0),
+				<#=a.Await#>Lexxys.Data.DataContextExtensions.Map<#=a.Async#>(<#=dc#>, 1, o => (record = new <#=recordName#>()).LoadRecord(o, 0),
 					<#=chooseExpression == null ? Strings.EscapeCsString(queryClause): $"{tableName}[{chooseExpression}]"#>,
 <#
 				for (int i = 0; i < keys.Count; ++i)
@@ -250,12 +251,12 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			{
 #>
 
-		public static <#=a.AsAsync#><#=a.Type(recordName)#> LoadBy<#=name#><#=a.Async#>(<#=key.CsType#> <#=idName#>)
+		public static <#=a.AsAsync#><#=a.Type(recordName)#> LoadBy<#=name#><#=a.Async#>(<#=key.CsType#> <#=idName#>, <#=dcDeclare#>)
 		{
 			try
 			{
 				<#=recordName#> record = null;
-				<#=a.Await#><#=dc#>.Map<#=a.Async#>(1, o => (record = new <#=recordName#>()).LoadRecord(o, 0),
+				<#=a.Await#>Lexxys.Data.DataContextExtensions.Map<#=a.Async#>(<#=dc#>, 1, o => (record = new <#=recordName#>()).LoadRecord(o, 0),
 					"<#=cls.Query ?? view.GetSelectClause()#> where [<#=key.Bind#>]=@<#=name#>",
 					new SqlParameter("@<#=name#>", SqlDbType.<#=key.SqlDbType#>) { Value = <#=idName#> });
 				return record;
@@ -278,7 +279,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			{
 #>
 
-		public static <#=a.AsAsync#><#=a.Type($"List<{recordName}>")#> Collect<#=a.Async#>(IEnumerable<int> ids, bool ordered = false)
+		public static <#=a.AsAsync#><#=a.Type($"List<{recordName}>")#> Collect<#=a.Async#>(IEnumerable<int> ids, bool ordered = false, <#=dcDeclare#>)
 		{
 			if (ids == null)
 				return new List<<#=recordName#>>();
@@ -287,12 +288,12 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			try
 			{
 				var result = new List<<#=recordName#>>();
-				<#=a.Await#><#=dc#>.Map<#=a.Async#>(o =>
+				<#=a.Await#>Lexxys.Data.DataContextExtensions.Map<#=a.Async#>(<#=dc#>, o =>
 					{
 						var record = new <#=recordName#>();
 						if (record.LoadRecord(o, 0))
 							result.Add(record);
-					}, "<#=cls.Query ?? view.GetSelectClause()#> where [<#=cls.Key ?? keyColumn.Bind#>] in " + Dc.IdFilter(ids));
+					}, "<#=cls.Query ?? view.GetSelectClause()#> where [<#=cls.Key ?? keyColumn.Bind#>] in " + <#=sqlTools#>.IdFilter(ids));
 				if (!ordered || result.Count < 2)
 					return result;
 				var sorted = new List<<#=recordName#>>(result.Count);
@@ -307,7 +308,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			catch (Exception flaw)
 			{
 				flaw.Add("table", "<#=table.FullName#>")
-					.Add("ids", Dc.IdFilter(ids));
+					.Add("ids", <#=sqlTools#>.IdFilter(ids));
 				throw;
 			}
 		}
@@ -319,8 +320,9 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 
 		foreach (var key in table.Fields.Where(o => o != keyColumn && o.IsUnique && o.CsType == "int"))
 		{
-			var nameItems = Strings.SplitByCapitals(key.GetPublicName());
-			int nameItemsCount = nameItems.Length;
+			var publicName = key.GetPublicName();
+			var nameItems = Strings.SplitByCapitals(publicName).Select(o => publicName.Substring(o.Index, o.Length)).ToList();
+			int nameItemsCount = nameItems.Count;
 			if (nameItemsCount > 1 && String.Equals(nameItems[nameItemsCount-1], "id", StringComparison.OrdinalIgnoreCase))
 				--nameItemsCount;
 		    nameItems[nameItemsCount - 1] = Lingua.Plural(nameItems[nameItemsCount - 1]);
@@ -330,7 +332,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			{
 #>
 
-		public static <#=a.AsAsync#><#=a.Type($"List<{recordName}>")#> CollectBy<#=methodName#><#=a.Async#>(IEnumerable<int> ids, bool ordered = false)
+		public static <#=a.AsAsync#><#=a.Type($"List<{recordName}>")#> CollectBy<#=methodName#><#=a.Async#>(IEnumerable<int> ids, bool ordered = false, <#=dcDeclare#>)
 		{
 			if (ids == null)
 				return new List<<#=recordName#>>();
@@ -339,12 +341,12 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			try
 			{
 				var result = new List<<#=recordName#>>();
-				<#=a.Await#><#=dc#>.Map<#=a.Async#>(o =>
+				<#=a.Await#>Lexxys.Data.DataContextExtensions.Map<#=a.Async#>(<#=dc#>, o =>
 					{
 						var record = new <#=recordName#>();
 						if (record.LoadRecord(o, 0))
 							result.Add(record);
-					}, "<#=cls.Query ?? view.GetSelectClause()#> where [<#=key.Bind#>] in " + Dc.IdFilter(ids));
+					}, "<#=cls.Query ?? view.GetSelectClause()#> where [<#=key.Bind#>] in " + <#=sqlTools#>.IdFilter(ids));
 				if (!ordered || result.Count < 2)
 					return result;
 				var sorted = new List<<#=recordName#>>(result.Count);
@@ -359,7 +361,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			catch (Exception flaw)
 			{
 				flaw.Add("table", "<#=table.FullName#>")
-					.Add("ids", Dc.IdFilter(ids));
+					.Add("ids", <#=sqlTools#>.IdFilter(ids));
 				throw;
 			}
 		}
@@ -387,12 +389,12 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			{
 #>
 
-		public static <#=a.AsAsync#><#=a.Type($"List<{recordName}>")#> <#=methodName#><#=a.Async#>(<#=method.MakeDeclaration()#>)
+		public static <#=a.AsAsync#><#=a.Type($"List<{recordName}>")#> <#=methodName#><#=a.Async#>(<#=method.MakeDeclaration(dcDeclare)#>)
 		{
 			try
 			{
 				var result = new List<<#=recordName#>>();
-				<#=a.Await#><#=dc#>.Map<#=a.Async#>(o =>
+				<#=a.Await#>Lexxys.Data.DataContextExtensions.Map<#=a.Async#>(<#=dc#>, o =>
 					{
 						var record = new <#=recordName#>();
 						if (record.LoadRecord(o, 0))
@@ -454,12 +456,12 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			{
 #>
 
-		public static <#=a.AsAsync#><#=a.Type($"List<{recordName}>")#> CollectBy<#=name#><#=a.Async#>(<#=key.CsType#> <#=local#>)
+		public static <#=a.AsAsync#><#=a.Type($"List<{recordName}>")#> CollectBy<#=name#><#=a.Async#>(<#=key.CsType#> <#=local#>, <#=dcDeclare#>)
 		{
 			try
 			{
 				var result = new List<<#=recordName#>>();
-				<#=a.Await#><#=dc#>.Map<#=a.Async#>(o =>
+				<#=a.Await#>Lexxys.Data.DataContextExtensions.Map<#=a.Async#>(<#=dc#>, o =>
 					{
 						var record = new <#=recordName#>();
 						if (record.LoadRecord(o, 0))
@@ -480,7 +482,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 		}
 #>
 
-		public bool LoadRecord(System.Data.IDataRecord record, int position)
+		private bool LoadRecord(System.Data.IDataRecord record, int position)
 		{
 			if (record == null)
 				throw EX.ArgumentNull("record");
@@ -557,7 +559,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			var virtualPrefix = a.IsAsync ?  "async Task<bool>": "bool";
 #>
 
-		public <#=virtualPrefix#> InsertRecord<#=a.Async#>()
+		public <#=virtualPrefix#> InsertRecord<#=a.Async#>(<#=dcDeclare#>)
 		{
 			if (!IsRecordNew)
 				return false;
@@ -667,7 +669,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			{
 					bool last = !extraCondition && i == clause.Length - 1;
 #>
-					<#=Strings.EscapeCsString("\r\n" + clause[i])#><#=last ? ";": " +"#>
+					<#=Strings.EscapeCsString("\n" + clause[i])#><#=last ? ";": " +"#>
 <#
 			}
 			if (extraCondition)
@@ -678,7 +680,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 					var field = table.KeyFields[k];
 					bool last = k == table.KeyFields.Count - 1;
 #>
-					"<#=pad#> [<#=field.Bind#>]" + Dc.Equal(<#=field.FieldName#>)<#=last ? ";": " +"#>
+					"<#=pad#> [<#=field.Bind#>]" + <#=sqlTools#>.Equal(<#=field.FieldName#>)<#=last ? ";": " +"#>
 <#
 					pad = "and";
 				}
@@ -718,7 +720,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 				var virtualPrefix = a.IsAsync ?  "async Task<bool>": "bool";
 #>
 
-		public <#=virtualPrefix#> UpdateRecord<#=a.Async#>()
+		public <#=virtualPrefix#> UpdateRecord<#=a.Async#>(<#=dcDeclare#>)
 		{
 			if (!IsRecordModified)
 				return false;
@@ -791,8 +793,8 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 				pp.Add(pX);
 
 				--text.Length;
-				text.Append("\r\nwhere <#=condition#>;")
-					.Append("\r\nselect @<#=timestamp.FieldName#>=[<#=timestamp.Bind#>] from <#=table.FullName#> where <#=condition#>");
+				text.Append("\nwhere <#=condition#>;")
+					.Append("\nselect @<#=timestamp.FieldName#>=[<#=timestamp.Bind#>] from <#=table.FullName#> where <#=condition#>");
 <#
 				}
 				else
@@ -800,7 +802,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 #>
 
 				--text.Length;
-				text.Append("\r\nwhere <#=condition#>;");
+				text.Append("\nwhere <#=condition#>;");
 <#
 				}
 #>
@@ -828,14 +830,14 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 			} // end for asyncTable
 #>
 
-		public bool SaveChanges()
+		public bool SaveChanges(<#=dcDeclare#>)
 		{
-			return IsRecordNew ? InsertRecord(): UpdateRecord();
+			return IsRecordNew ? InsertRecord(dc): UpdateRecord(dc);
 		}
 
-		public Task<bool> SaveChangesAsync()
+		public Task<bool> SaveChangesAsync(<#=dcDeclare#>)
 		{
-			return IsRecordNew ? InsertRecordAsync(): UpdateRecordAsync();
+			return IsRecordNew ? InsertRecordAsync(dc): UpdateRecordAsync(dc);
 		}
 <#
 		} // if (table.KeyFields.Count > 0)
@@ -851,7 +853,7 @@ namespace <#=Project.Namespace ?? "Entities"#>.Data
 					var keys = method.Fields;
 #>
 
-		public static <#=a.AsAsync#><#=a.Type("bool")#> Delete<#=a.Async#>(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>)
+		public static <#=a.AsAsync#><#=a.Type("bool")#> Delete<#=a.Async#>(<#=string.Join(", ", keys.Select(o=> o.CsType + " " + Tool.NormalizeName(o.Name, NameStyle.LocalName)))#>, <#=dcDeclare#>)
 		{
 			return <#=a.Await#><#=dc#>.Execute<#=a.Async#>("delete from <#=table.FullName#> where <#=string.Join(" and ", keys.Select(o=> "[" + o.Bind + "]=@" + Tool.NormalizeName(o.Name, NameStyle.PublicName)))#>", <#=string.Join(", ", keys.Select(o=> "new SqlParameter(\"@" + Tool.NormalizeName(o.Name, NameStyle.PublicName) + "\", SqlDbType." + o.SqlDbType + ") { Value = " + Tool.NormalizeName(o.Name, NameStyle.LocalName) + " }"))#>) > 0;
 		}
